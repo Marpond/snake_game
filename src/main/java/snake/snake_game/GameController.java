@@ -31,7 +31,7 @@ public class GameController implements Initializable
 
     private int score;
 
-    private final double speedMultiplier = 1.1;
+    private final double cycleMultiplier = 1.1;
     @FXML
     private AnchorPane anchorPane;
     @FXML
@@ -53,7 +53,7 @@ public class GameController implements Initializable
         food = new Food(0,0, anchorPane, entitySize);
         food.move();
         setBody();
-        setGameTicks();
+        setTimeline();
 
     }
 
@@ -62,7 +62,7 @@ public class GameController implements Initializable
     {
         food.move();
         setBody();
-        setGameTicks();
+        setTimeline();
     }
 
     void setBody()
@@ -82,7 +82,7 @@ public class GameController implements Initializable
         anchorPane.getChildren().add(head);
     }
 
-    void setGameTicks()
+    void setTimeline()
     {
         try
         {
@@ -93,8 +93,8 @@ public class GameController implements Initializable
             System.out.println("Timeline is null");
         }
 
-        double speed = 0.25;
-        timeline = new Timeline(new KeyFrame(Duration.seconds(speed), e ->
+        double cycleRate = 0.25;
+        timeline = new Timeline(new KeyFrame(Duration.seconds(cycleRate), e ->
         {
 
             System.out.println("Food: "+food.getPosition().getLayoutX()+" "+food.getPosition().getLayoutY());
@@ -118,7 +118,7 @@ public class GameController implements Initializable
                 }
 
                 // Speed up
-                timeline.setRate(timeline.getRate()*speedMultiplier);
+                timeline.setRate(timeline.getRate()*cycleMultiplier);
             }
 
             moveTail();
@@ -142,7 +142,7 @@ public class GameController implements Initializable
     {
         if(canChangeDirection)
         {
-            if (event.getCode().equals(KeyCode.W) && direction != Direction.DOWN)       {direction = Direction.UP;}
+            if      (event.getCode().equals(KeyCode.W) && direction != Direction.DOWN)  {direction = Direction.UP;}
             else if (event.getCode().equals(KeyCode.S) && direction != Direction.UP)    {direction = Direction.DOWN;}
             else if (event.getCode().equals(KeyCode.A) && direction != Direction.RIGHT) {direction = Direction.LEFT;}
             else if (event.getCode().equals(KeyCode.D) && direction != Direction.LEFT)  {direction = Direction.RIGHT;}
@@ -202,7 +202,7 @@ public class GameController implements Initializable
     {
         for (Rectangle tail:body.subList(1,body.size()))
         {
-            if (tail.getLayoutX()==head.getLayoutX() && tail.getLayoutY()==head.getLayoutY())
+            if (tail.getLayoutX() == head.getLayoutX() && tail.getLayoutY() == head.getLayoutY())
             {
                 return true;
             }
