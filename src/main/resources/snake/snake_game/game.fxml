@@ -2,13 +2,18 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Text?>
 
 
-<AnchorPane prefHeight="637.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="snake.snake_game.GameController">
-   <children>
-        <Button fx:id="startButton" mnemonicParsing="false" onKeyPressed="#changeDirection" onMouseClicked="#reset" text="Restart" />
-      <AnchorPane fx:id="anchorPane" layoutY="37.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#changeDirection" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #2e8d4b;" />
-      <Text fx:id="scoreText" layoutX="287.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
-   </children>
-</AnchorPane>
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="snake.snake_game.GameController">
+   <center>
+      <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#changeDirection" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #2e8d4b;" />
+   </center>
+   <bottom>
+      <Button fx:id="startButton" mnemonicParsing="false" onKeyPressed="#changeDirection" onMouseClicked="#reset" text="Restart" BorderPane.alignment="CENTER" />
+   </bottom>
+   <top>
+      <Text fx:id="scoreText" strokeType="OUTSIDE" strokeWidth="0.0" text="0" BorderPane.alignment="CENTER" />
+   </top>
+</BorderPane>

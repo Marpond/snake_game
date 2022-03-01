@@ -183,6 +183,12 @@ public class GameController implements Initializable
         return false;
     }
 
+    boolean isHitWall()
+    {
+        return head.getLayoutX() > anchorPane.getPrefWidth() - entitySize || head.getLayoutX() < 0 ||
+                head.getLayoutY() < 0 || head.getLayoutY() > anchorPane.getPrefHeight() - entitySize;
+    }
+
     boolean isSelfCollision()
     {
         for (Rectangle tail:body.subList(1,body.size()))
@@ -197,7 +203,7 @@ public class GameController implements Initializable
 
     boolean isGameOver()
     {
-        if (head.getLayoutX() > 550 || head.getLayoutX() < 0 || head.getLayoutY() < 0 || head.getLayoutY() > 550)
+        if (isHitWall())
         {
             return true;
         }
