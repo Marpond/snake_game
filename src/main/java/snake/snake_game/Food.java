@@ -7,35 +7,30 @@ import javafx.scene.shape.Rectangle;
 import java.util.Random;
 
 public class Food {
-    private final Position position;
     private final Rectangle rectangle;
     private final Random random = new Random();
-    private final int size;
+    private final int entitySize;
 
-
-    public Food(double xPos, double yPos, AnchorPane pane, double size)
+    public Food(double x, double y, AnchorPane pane, double entitySize)
     {
-        this.size = (int) size;
-        position = new Position(xPos,yPos);
-        rectangle = new Rectangle(position.getXPos(),position.getYPos(),size,size);
+        this.entitySize = (int) entitySize;
         Color color = Color.RED;
+        rectangle = new Rectangle(x,y,entitySize,entitySize);
         rectangle.setFill(color);
         pane.getChildren().add(rectangle);
     }
 
-    public Position getPosition()
+    public Rectangle getPosition()
     {
-        return position;
+        return rectangle;
     }
 
-    public void spawnFood()
+    public void move()
     {
-        int positionX = random.nextInt(12);
-        int positionY = random.nextInt(12);
-        rectangle.setX(positionX * size);
-        rectangle.setY(positionY * size);
-
-        position.setXPos(positionX * size);
-        position.setYPos(positionY * size);
+        int gridSize = 12;
+        int positionX = random.nextInt(gridSize);
+        int positionY = random.nextInt(gridSize);
+        rectangle.setLayoutX(positionX * entitySize);
+        rectangle.setLayoutY(positionY * entitySize);
     }
 }

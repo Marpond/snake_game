@@ -11,231 +11,211 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class GameController implements Initializable
 {
-    //A snake body part is 50x50
     private final Double entitySize = 50.;
-    //The head of the snake is created, at position (250,250)
-    private Rectangle snakeHead;
-    //First snake tail created behind the head of the snake
-    private Rectangle firstTail;
-    //x and y position of the snake head different from starting position
-    double xPos;
-    double yPos;
+    private Rectangle head;
 
-    //Food
     Food food;
 
-    //Direction snake is moving at start
     private Direction direction;
 
-    //List of all position of the snake head
-    private final List<Position> positions = new ArrayList<>();
+    private final ArrayList<Rectangle> body = new ArrayList<>();
 
-    //List of all snake body parts
-    private final ArrayList<Rectangle> snakeBody = new ArrayList<>();
+    private int score;
 
-    //How many times the snake has moved
-    private int snakeMovement;
-
-    //Speed of the game
-    private final double baseSpeed = 0.3;
-
-    // Speed multiplier
-    private final double speedMultiplier = 1.2;
-
+    private final double speedMultiplier = 1.1;
     @FXML
     private AnchorPane anchorPane;
     @FXML
     private Button startButton;
+    @FXML
+    private Text scoreText;
 
     Timeline timeline;
 
+    // Without this the user would be able to change direction multiple times between timeline cycles
     private boolean canChangeDirection;
+
+    Color headColor = Color.web("ffffff");
+    Color tailColor = Color.web("000000");
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        createTimeline();
-        food = new Food(-50,-50, anchorPane, entitySize);
-        start();
+        food = new Food(0,0, anchorPane, entitySize);
+        food.move();
+        setBody();
+        setGameTicks();
+
     }
 
-    void createTimeline()
+    @FXML
+    void reset()
     {
-        timeline = new Timeline(new KeyFrame(Duration.seconds(baseSpeed), e ->
-        {
-            positions.add(new Position(snakeHead.getX() + xPos, snakeHead.getY() + yPos));
+        food.move();
+        setBody();
+        setGameTicks();
+    }
 
-            for (int i = 1; i < snakeBody.size(); i++)
-            {
-                moveTail(snakeBody.get(i), i);
-            }
-            canChangeDirection = true;
-            snakeMovement++;
+    void setBody()
+    {
+        for (Rectangle segment: body)
+        {
+            anchorPane.getChildren().remove(segment);
+        }
+        body.clear();
+        head = new Rectangle(0, 0, entitySize, entitySize);
+
+        direction = Direction.RIGHT;
+        canChangeDirection = true;
+
+        head.setFill(headColor);
+        body.add(head);
+        anchorPane.getChildren().add(head);
+    }
+
+    void setGameTicks()
+    {
+        try
+        {
+            timeline.stop();
+        }
+        catch (Exception e)
+        {
+            System.out.println("Timeline is null");
+        }
+
+        double speed = 0.25;
+        timeline = new Timeline(new KeyFrame(Duration.seconds(speed), e ->
+        {
+
+            System.out.println("Food: "+food.getPosition().getLayoutX()+" "+food.getPosition().getLayoutY());
+
+            System.out.println("Head: "+head.getLayoutX()+" "+head.getLayoutY());
+
             if (isFoodEaten())
             {
+                // Update score
+                score = Integer.parseInt(scoreText.getText());
+                scoreText.setText(String.valueOf(score+1));
+
+                // New tail
+                addTail();
+
+                // New food
+                food.move();
                 while (isFoodInSnake())
                 {
-                    food.spawnFood();
+                    food.move();
                 }
-                addTail();
-                // Spawn new food
-                food.spawnFood();
-                // Speed things up
+
+                // Speed up
                 timeline.setRate(timeline.getRate()*speedMultiplier);
             }
-            moveHead(snakeHead);
-            if(gameOver())
+
+            moveTail();
+            moveHead();
+
+            if (isGameOver())
             {
                 timeline.stop();
             }
+
+            canChangeDirection = true;
+
         }));
-    }
-    @FXML
-    void start()
-    {
-        for (Rectangle bodyPart : snakeBody)
-        {
-            anchorPane.getChildren().remove(bodyPart);
-        }
-
-        snakeMovement = 0;
-        positions.clear();
-        snakeBody.clear();
-        snakeHead = new Rectangle(250, 250, entitySize, entitySize);
-        firstTail = new Rectangle(snakeHead.getX() - entitySize, snakeHead.getY(), entitySize, entitySize);
-        xPos = snakeHead.getLayoutX();
-        yPos = snakeHead.getLayoutY();
-        direction = Direction.RIGHT;
-        canChangeDirection = true;
-        food.spawnFood();
-
-        snakeBody.add(snakeHead);
-        snakeHead.setFill(Color.web("d2ffba"));
-
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.setRate(1);
         timeline.play();
-
-        firstTail.setFill(Color.web("9abf87"));
-        snakeBody.add(firstTail);
-
-        anchorPane.getChildren().addAll(snakeHead, firstTail);
     }
 
-    //Change position with key pressed
     @FXML
     void changeDirection(KeyEvent event)
     {
-        if(canChangeDirection){
-            if (event.getCode().equals(KeyCode.W) && direction != Direction.DOWN)
-            {
-                direction = Direction.UP;
-            }
-            else if (event.getCode().equals(KeyCode.S) && direction != Direction.UP)
-            {
-                direction = Direction.DOWN;
-            }
-            else if (event.getCode().equals(KeyCode.A) && direction != Direction.RIGHT)
-            {
-                direction = Direction.LEFT;
-            }
-            else if (event.getCode().equals(KeyCode.D) && direction != Direction.LEFT)
-            {
-                direction = Direction.RIGHT;
-            }
+        if(canChangeDirection)
+        {
+            if (event.getCode().equals(KeyCode.W) && direction != Direction.DOWN)       {direction = Direction.UP;}
+            else if (event.getCode().equals(KeyCode.S) && direction != Direction.UP)    {direction = Direction.DOWN;}
+            else if (event.getCode().equals(KeyCode.A) && direction != Direction.RIGHT) {direction = Direction.LEFT;}
+            else if (event.getCode().equals(KeyCode.D) && direction != Direction.LEFT)  {direction = Direction.RIGHT;}
             canChangeDirection = false;
         }
     }
 
-    //Snake head is moved in the direction specified
-    private void moveHead(Rectangle snakeHead)
+    void moveHead()
     {
         switch (direction)
         {
-            case RIGHT -> {xPos = xPos + entitySize;snakeHead.setTranslateX(xPos);}
-            case LEFT -> {xPos = xPos - entitySize;snakeHead.setTranslateX(xPos);}
-            case UP -> {yPos = yPos - entitySize;snakeHead.setTranslateY(yPos);}
-            case DOWN -> {yPos = yPos + entitySize;snakeHead.setTranslateY(yPos);}
+            case RIGHT -> head.setLayoutX(head.getLayoutX() + entitySize);
+            case LEFT  -> head.setLayoutX(head.getLayoutX() - entitySize);
+            case UP    -> head.setLayoutY(head.getLayoutY() - entitySize);
+            case DOWN  -> head.setLayoutY(head.getLayoutY() + entitySize);
         }
     }
 
-    //A specific tail is moved to the position of the head x game ticks after the head was there
-    private void moveTail(Rectangle snakeTail, int tailNumber) {
-        double yPos = positions.get(snakeMovement - tailNumber + 1).getYPos() - snakeTail.getY();
-        double xPos = positions.get(snakeMovement - tailNumber + 1).getXPos() - snakeTail.getX();
-        snakeTail.setTranslateX(xPos);
-        snakeTail.setTranslateY(yPos);
-    }
-
-    //New snake tail is created and added to the snake and the anchor pane
-    private void addTail()
+    void moveTail()
     {
-        Rectangle snakeTail = new Rectangle
-                (
-                snakeBody.get(1).getX() + xPos + entitySize,
-                snakeBody.get(1).getY() + yPos, entitySize, entitySize
-                );
-        snakeTail.setFill(Color.web("9abf87"));
-        snakeBody.add(snakeTail);
-        anchorPane.getChildren().add(snakeTail);
-    }
-
-    public boolean gameOver()
-    {
-        // Hit wall
-        if (xPos > 300 || xPos < -250 ||yPos < -250 || yPos > 300)
+        if (body.size()>1)
         {
-            return true;
-        }
-        // Hit itself
-        else return selfCollision();
-    }
-
-    public boolean selfCollision()
-    {
-        int size = positions.size() - 1;
-        if(size > 2){
-            for (int i = size - snakeBody.size(); i < size; i++) {
-                if(positions.get(size).getXPos() == (positions.get(i).getXPos()) && positions.get(size).getYPos() == (positions.get(i).getYPos()))
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean isFoodEaten()
-    {
-        // If x and y coordinates of the food and snake head are equal
-        if(xPos + snakeHead.getX() == food.getPosition().getXPos() && yPos + snakeHead.getY() == food.getPosition().getYPos())
-        {
-            return true;
-        }
-        return false;
-    }
-
-    private boolean isFoodInSnake()
-    {
-        int size = positions.size();
-        if(size > 2){
-            for (int i = size - snakeBody.size(); i < size; i++)
+            for (int i = body.size()-1;i > 0;i--)
             {
-                if(food.getPosition().getXPos() == (positions.get(i).getXPos()) && food.getPosition().getYPos() == (positions.get(i).getYPos()))
-                {
-                    return true;
-                }
+                body.get(i).setLayoutX(body.get(i-1).getLayoutX());
+                body.get(i).setLayoutY(body.get(i-1).getLayoutY());
+            }
+        }
+    }
+
+    void addTail()
+    {
+        Rectangle tail = new Rectangle(0,0,entitySize,entitySize);
+        body.add(tail);
+        tail.setFill(tailColor);
+        anchorPane.getChildren().add(tail);
+    }
+
+    boolean isFoodEaten()
+    {
+        return food.getPosition().getLayoutX() == head.getLayoutX() && food.getPosition().getLayoutY() == head.getLayoutY();
+    }
+
+    boolean isFoodInSnake()
+    {
+        for (Rectangle segment:body)
+        {
+            if (food.getPosition().getLayoutX() == segment.getLayoutX() && food.getPosition().getLayoutY() == segment.getLayoutY())
+            {
+                return true;
             }
         }
         return false;
+    }
+
+    boolean isSelfCollision()
+    {
+        for (Rectangle tail:body.subList(1,body.size()))
+        {
+            if (tail.getLayoutX()==head.getLayoutX() && tail.getLayoutY()==head.getLayoutY())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    boolean isGameOver()
+    {
+        if (head.getLayoutX() > 550 || head.getLayoutX() < 0 || head.getLayoutY() < 0 || head.getLayoutY() > 550)
+        {
+            return true;
+        }
+        else return isSelfCollision();
     }
 }
