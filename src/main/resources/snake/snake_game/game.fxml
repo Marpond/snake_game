@@ -11,7 +11,7 @@
       <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#changeDirection" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #2e8d4b;" />
    </center>
    <bottom>
-      <Button fx:id="startButton" mnemonicParsing="false" onKeyPressed="#changeDirection" onMouseClicked="#reset" text="Restart" BorderPane.alignment="CENTER" />
+      <Button mnemonicParsing="false" onKeyPressed="#changeDirection" onMouseClicked="#reset" text="Restart" BorderPane.alignment="CENTER" />
    </bottom>
    <top>
       <Text fx:id="scoreText" strokeType="OUTSIDE" strokeWidth="0.0" text="0" BorderPane.alignment="CENTER" />

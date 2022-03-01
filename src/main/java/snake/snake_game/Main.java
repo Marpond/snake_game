@@ -14,7 +14,7 @@ public class Main extends Application
     public void start(Stage primaryStage) throws IOException
     {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("menu.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        Scene scene = new Scene(fxmlLoader.load());
         stage = primaryStage;
         stage.setTitle("Snaek gam");
         stage.setScene(scene);

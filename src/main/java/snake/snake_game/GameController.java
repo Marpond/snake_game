@@ -6,11 +6,12 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -32,11 +33,9 @@ public class GameController implements Initializable
 
     private int score;
 
-    private final double cycleMultiplier = 1.1;
+    private final double cycleMultiplier = 1.01;
     @FXML
     private AnchorPane anchorPane;
-    @FXML
-    private Button startButton;
     @FXML
     private Text scoreText;
 
@@ -67,20 +66,31 @@ public class GameController implements Initializable
         scoreText.setText("0");
     }
 
+    void setRectangleImage(Rectangle rectangle, String directory)
+    {
+        Image image = new Image(directory);
+        ImagePattern imagePattern = new ImagePattern(image);
+        rectangle.setFill(imagePattern);
+    }
+
     void setBody()
     {
+        // Remove snake from anchorpane, clear arraylist
         for (Rectangle segment: snakeBody)
         {
             anchorPane.getChildren().remove(segment);
         }
         snakeBody.clear();
-        head = new Rectangle(0, 0, entitySize, entitySize);
-
+        // Initial direction
         direction = Direction.RIGHT;
-
+        // Create head
+        head = new Rectangle(0, 0, entitySize, entitySize);
         head.setFill(headColor);
+        // Add to body and anchorpane
         snakeBody.add(head);
         anchorPane.getChildren().add(head);
+        // Add first tail
+        addTail();
     }
 
     void setTimeline()
@@ -115,9 +125,9 @@ public class GameController implements Initializable
             {
                 timeline.stop();
                 double delay = 500;
-                for (Rectangle segment:snakeBody)
+                for (int i = snakeBody.size()-1;i>-1;i--)
                 {
-                    fade(segment, Duration.millis(delay));
+                    fadeSnake(i, Duration.millis(delay));
                     delay /= 1.1;
                 }
             }
@@ -128,10 +138,10 @@ public class GameController implements Initializable
         timeline.play();
     }
 
-    void fade(Rectangle segment, Duration delay)
+    void fadeSnake(int index, Duration delay)
     {
         Timeline fade = new Timeline(new KeyFrame(Duration.millis(1000),
-                new KeyValue(segment.opacityProperty(), 0.0)));
+                new KeyValue(snakeBody.get(index).opacityProperty(), 0.0)));
         fade.setRate(2);
         fade.setDelay(delay);
         fade.play();

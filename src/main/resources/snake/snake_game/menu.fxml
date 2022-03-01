@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Text?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17" fx:controller="snake.snake_game.SceneController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="645.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="snake.snake_game.MenuController">
   <columnConstraints>
     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
@@ -17,7 +17,7 @@
   </rowConstraints>
    <children>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Snaek gam" textAlignment="CENTER" wrappingWidth="600.4640007019043" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-      <Button fx:id="startBtn" mnemonicParsing="false" onAction="#switchToGame" text="start" GridPane.rowIndex="1" />
+      <Button mnemonicParsing="false" onAction="#switchToUsername" text="new game" GridPane.rowIndex="1" />
       <Button fx:id="lbBtn" mnemonicParsing="false" onAction="#switchToLeaderboard" text="leaderboard" GridPane.rowIndex="2" />
    </children>
 </GridPane>
