@@ -18,8 +18,5 @@ public class UsernameController
     {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("game.fxml")));
         Main.stage.setScene(new Scene(root));
-
-        
-
     }
 }

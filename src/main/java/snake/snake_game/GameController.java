@@ -27,13 +27,16 @@ public class GameController implements Initializable
 
     private int score;
 
+    private final double cycleRate = 1;
+
     private final double cycleMultiplier = 1.01;
     @FXML
     public AnchorPane anchorPane;
     @FXML
     private Text scoreText;
 
-    Timeline timeline;
+    Timeline graphicsTimeline;
+    Timeline gameTimeline;
 
     // Without this the user would be able to change direction multiple times between timeline cycles
     private boolean canChangeDirection;
@@ -45,13 +48,15 @@ public class GameController implements Initializable
         snake = new Snake(0,0, anchorPane);
         food = new Food(0,0, anchorPane);
         food.move();
-        setTimeline();
+        setGameTimeline();
+        setGraphicsTimeline();
     }
 
     @FXML
     void reset()
     {
-        timeline.stop();
+        gameTimeline.stop();
+        graphicsTimeline.stop();
         for (Rectangle segment:snake.getBody())
         {
             anchorPane.getChildren().remove(segment);
@@ -59,14 +64,22 @@ public class GameController implements Initializable
         direction = Direction.RIGHT;
         snake = new Snake(0,0, anchorPane);
         food.move();
-        setTimeline();
+        setGameTimeline();
+        setGraphicsTimeline();
         scoreText.setText("0");
     }
 
-    void setTimeline()
+    void setGraphicsTimeline()
     {
-        double cycleRate = 0.25;
-        timeline = new Timeline(new KeyFrame(Duration.seconds(cycleRate), e ->
+        graphicsTimeline = new Timeline(new KeyFrame(Duration.millis(1), e -> snake.setTailGraphics()));
+        graphicsTimeline.setCycleCount(Animation.INDEFINITE);
+        graphicsTimeline.setRate(1);
+        graphicsTimeline.play();
+    }
+
+    void setGameTimeline()
+    {
+        gameTimeline = new Timeline(new KeyFrame(Duration.seconds(cycleRate), e ->
         {
 
             System.out.println("Food: "+food.getRectangle().getLayoutX()+" "+food.getRectangle().getLayoutY());
@@ -86,26 +99,26 @@ public class GameController implements Initializable
                     food.move();
                 }
                 // Speed up
-                timeline.setRate(timeline.getRate()*cycleMultiplier);
+                gameTimeline.setRate(gameTimeline.getRate()*cycleMultiplier);
             }
             snake.moveTail();
             snake.moveHead(direction);
 
             if (isGameOver())
             {
-                timeline.stop();
+                gameTimeline.stop();
                 double delay = 500;
                 for (int i = snake.getBody().size()-1;i>-1;i--)
                 {
                     fadeSnake(i, Duration.millis(delay));
-                    delay /= 1.1;
+                    delay *= 0.9;
                 }
             }
             canChangeDirection = true;
         }));
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.setRate(1);
-        timeline.play();
+        gameTimeline.setCycleCount(Animation.INDEFINITE);
+        gameTimeline.setRate(1);
+        gameTimeline.play();
     }
 
     void fadeSnake(int index, Duration delay)
