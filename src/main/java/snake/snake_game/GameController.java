@@ -6,36 +6,30 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class GameController implements Initializable
 {
-    private final Double entitySize = 50.;
-    private Rectangle head;
+    public static final Double entitySize = 50.;
 
+    Snake snake;
     Food food;
 
     private Direction direction;
-
-    private final ArrayList<Rectangle> snakeBody = new ArrayList<>();
 
     private int score;
 
     private final double cycleMultiplier = 1.01;
     @FXML
-    private AnchorPane anchorPane;
+    public AnchorPane anchorPane;
     @FXML
     private Text scoreText;
 
@@ -44,15 +38,13 @@ public class GameController implements Initializable
     // Without this the user would be able to change direction multiple times between timeline cycles
     private boolean canChangeDirection;
 
-    Color headColor = Color.web("ffffff");
-    Color tailColor = Color.web("000000");
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        food = new Food(0,0, anchorPane, entitySize);
+        direction = Direction.RIGHT;
+        snake = new Snake(0,0, anchorPane);
+        food = new Food(0,0, anchorPane);
         food.move();
-        setBody();
         setTimeline();
     }
 
@@ -60,37 +52,15 @@ public class GameController implements Initializable
     void reset()
     {
         timeline.stop();
-        food.move();
-        setBody();
-        setTimeline();
-        scoreText.setText("0");
-    }
-
-    void setRectangleImage(Rectangle rectangle, String directory)
-    {
-        Image image = new Image(directory);
-        ImagePattern imagePattern = new ImagePattern(image);
-        rectangle.setFill(imagePattern);
-    }
-
-    void setBody()
-    {
-        // Remove snake from anchorpane, clear arraylist
-        for (Rectangle segment: snakeBody)
+        for (Rectangle segment:snake.getBody())
         {
             anchorPane.getChildren().remove(segment);
         }
-        snakeBody.clear();
-        // Initial direction
         direction = Direction.RIGHT;
-        // Create head
-        head = new Rectangle(0, 0, entitySize, entitySize);
-        head.setFill(headColor);
-        // Add to body and anchorpane
-        snakeBody.add(head);
-        anchorPane.getChildren().add(head);
-        // Add first tail
-        addTail();
+        snake = new Snake(0,0, anchorPane);
+        food.move();
+        setTimeline();
+        scoreText.setText("0");
     }
 
     void setTimeline()
@@ -99,8 +69,8 @@ public class GameController implements Initializable
         timeline = new Timeline(new KeyFrame(Duration.seconds(cycleRate), e ->
         {
 
-            System.out.println("Food: "+food.getPosition().getLayoutX()+" "+food.getPosition().getLayoutY());
-            System.out.println("Head: "+head.getLayoutX()+" "+head.getLayoutY());
+            System.out.println("Food: "+food.getRectangle().getLayoutX()+" "+food.getRectangle().getLayoutY());
+            System.out.println("Head: "+snake.getBody().get(0).getLayoutX()+" "+snake.getBody().get(0).getLayoutY());
 
             if (isFoodEaten())
             {
@@ -108,7 +78,7 @@ public class GameController implements Initializable
                 score = Integer.parseInt(scoreText.getText());
                 scoreText.setText(String.valueOf(score+1));
                 // New tail
-                addTail();
+                snake.addTail(anchorPane);
                 // New food
                 food.move();
                 while (isFoodInSnake())
@@ -118,14 +88,14 @@ public class GameController implements Initializable
                 // Speed up
                 timeline.setRate(timeline.getRate()*cycleMultiplier);
             }
-            moveTail();
-            moveHead();
+            snake.moveTail();
+            snake.moveHead(direction);
 
             if (isGameOver())
             {
                 timeline.stop();
                 double delay = 500;
-                for (int i = snakeBody.size()-1;i>-1;i--)
+                for (int i = snake.getBody().size()-1;i>-1;i--)
                 {
                     fadeSnake(i, Duration.millis(delay));
                     delay /= 1.1;
@@ -141,7 +111,7 @@ public class GameController implements Initializable
     void fadeSnake(int index, Duration delay)
     {
         Timeline fade = new Timeline(new KeyFrame(Duration.millis(1000),
-                new KeyValue(snakeBody.get(index).opacityProperty(), 0.0)));
+                new KeyValue(snake.getBody().get(index).opacityProperty(), 0.0)));
         fade.setRate(2);
         fade.setDelay(delay);
         fade.play();
@@ -160,48 +130,16 @@ public class GameController implements Initializable
         }
     }
 
-    void moveHead()
-    {
-        switch (direction)
-        {
-            case DOWN  -> head.setLayoutY(head.getLayoutY() + entitySize);
-            case RIGHT -> head.setLayoutX(head.getLayoutX() + entitySize);
-            case UP    -> head.setLayoutY(head.getLayoutY() - entitySize);
-            case LEFT  -> head.setLayoutX(head.getLayoutX() - entitySize);
-        }
-    }
-
-    void moveTail()
-    {
-        if (snakeBody.size()>1)
-        {
-            // First time I've done a reverse loop o.o
-            for (int i = snakeBody.size()-1; i > 0; i--)
-            {
-                snakeBody.get(i).setLayoutX(snakeBody.get(i-1).getLayoutX());
-                snakeBody.get(i).setLayoutY(snakeBody.get(i-1).getLayoutY());
-            }
-        }
-    }
-
-    void addTail()
-    {
-        Rectangle tail = new Rectangle(0,0,entitySize,entitySize);
-        snakeBody.add(tail);
-        tail.setFill(tailColor);
-        anchorPane.getChildren().add(tail);
-    }
-
     boolean isFoodEaten()
     {
-        return food.getPosition().getLayoutX() == head.getLayoutX() && food.getPosition().getLayoutY() == head.getLayoutY();
+        return food.getRectangle().getLayoutX() == snake.getBody().get(0).getLayoutX() && food.getRectangle().getLayoutY() == snake.getBody().get(0).getLayoutY();
     }
 
     boolean isFoodInSnake()
     {
-        for (Rectangle segment: snakeBody)
+        for (Rectangle segment: snake.getBody())
         {
-            if (food.getPosition().getLayoutX() == segment.getLayoutX() && food.getPosition().getLayoutY() == segment.getLayoutY())
+            if (food.getRectangle().getLayoutX() == segment.getLayoutX() && food.getRectangle().getLayoutY() == segment.getLayoutY())
             {
                 return true;
             }
@@ -211,15 +149,15 @@ public class GameController implements Initializable
 
     boolean isHitWall()
     {
-        return head.getLayoutX() > anchorPane.getPrefWidth() - entitySize || head.getLayoutX() < 0 ||
-                head.getLayoutY() < 0 || head.getLayoutY() > anchorPane.getPrefHeight() - entitySize;
+        return snake.getBody().get(0).getLayoutX() > anchorPane.getPrefWidth() - entitySize || snake.getBody().get(0).getLayoutX() < 0 ||
+                snake.getBody().get(0).getLayoutY() < 0 || snake.getBody().get(0).getLayoutY() > anchorPane.getPrefHeight() - entitySize;
     }
 
     boolean isSelfCollision()
     {
-        for (Rectangle tail: snakeBody.subList(1, snakeBody.size()))
+        for (Rectangle tail: snake.getBody().subList(1, snake.getBody().size()))
         {
-            if (tail.getLayoutX() == head.getLayoutX() && tail.getLayoutY() == head.getLayoutY())
+            if (tail.getLayoutX() == snake.getBody().get(0).getLayoutX() && tail.getLayoutY() == snake.getBody().get(0).getLayoutY())
             {
                 return true;
             }

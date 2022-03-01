@@ -6,21 +6,20 @@ import javafx.scene.shape.Rectangle;
 
 import java.util.Random;
 
-public class Food {
+public class Food
+{
     private final Rectangle rectangle;
     private final Random random = new Random();
-    private final int entitySize;
 
-    public Food(double x, double y, AnchorPane pane, double entitySize)
+    public Food(double x, double y, AnchorPane anchorPane)
     {
-        this.entitySize = (int) entitySize;
         Color color = Color.RED;
-        rectangle = new Rectangle(x,y,entitySize,entitySize);
+        rectangle = new Rectangle(x,y,GameController.entitySize,GameController.entitySize);
         rectangle.setFill(color);
-        pane.getChildren().add(rectangle);
+        anchorPane.getChildren().add(rectangle);
     }
 
-    public Rectangle getPosition()
+    public Rectangle getRectangle()
     {
         return rectangle;
     }
@@ -30,7 +29,9 @@ public class Food {
         int gridSize = 12;
         int positionX = random.nextInt(gridSize);
         int positionY = random.nextInt(gridSize);
-        rectangle.setLayoutX(positionX * entitySize);
-        rectangle.setLayoutY(positionY * entitySize);
+        rectangle.setLayoutX(positionX * GameController.entitySize);
+        rectangle.setLayoutY(positionY * GameController.entitySize);
     }
+
+
 }
