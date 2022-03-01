@@ -60,6 +60,7 @@ public class GameController implements Initializable
     @FXML
     void reset()
     {
+        timeline.stop();
         food.move();
         setBody();
         setTimeline();
@@ -84,21 +85,11 @@ public class GameController implements Initializable
 
     void setTimeline()
     {
-        try
-        {
-            timeline.stop();
-        }
-        catch (Exception e)
-        {
-            System.out.println("Timeline is null");
-        }
-
         double cycleRate = 0.25;
         timeline = new Timeline(new KeyFrame(Duration.seconds(cycleRate), e ->
         {
 
             System.out.println("Food: "+food.getPosition().getLayoutX()+" "+food.getPosition().getLayoutY());
-
             System.out.println("Head: "+head.getLayoutX()+" "+head.getLayoutY());
 
             if (isFoodEaten())
@@ -106,21 +97,17 @@ public class GameController implements Initializable
                 // Update score
                 score = Integer.parseInt(scoreText.getText());
                 scoreText.setText(String.valueOf(score+1));
-
                 // New tail
                 addTail();
-
                 // New food
                 food.move();
                 while (isFoodInSnake())
                 {
                     food.move();
                 }
-
                 // Speed up
                 timeline.setRate(timeline.getRate()*cycleMultiplier);
             }
-
             moveTail();
             moveHead();
 
@@ -128,9 +115,7 @@ public class GameController implements Initializable
             {
                 timeline.stop();
             }
-
             canChangeDirection = true;
-
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.setRate(1);
