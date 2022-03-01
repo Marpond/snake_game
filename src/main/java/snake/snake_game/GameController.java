@@ -2,6 +2,7 @@ package snake.snake_game;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -27,7 +28,7 @@ public class GameController implements Initializable
 
     private Direction direction;
 
-    private final ArrayList<Rectangle> body = new ArrayList<>();
+    private final ArrayList<Rectangle> snakeBody = new ArrayList<>();
 
     private int score;
 
@@ -54,7 +55,6 @@ public class GameController implements Initializable
         food.move();
         setBody();
         setTimeline();
-
     }
 
     @FXML
@@ -64,22 +64,22 @@ public class GameController implements Initializable
         food.move();
         setBody();
         setTimeline();
+        scoreText.setText("0");
     }
 
     void setBody()
     {
-        for (Rectangle segment: body)
+        for (Rectangle segment: snakeBody)
         {
             anchorPane.getChildren().remove(segment);
         }
-        body.clear();
+        snakeBody.clear();
         head = new Rectangle(0, 0, entitySize, entitySize);
 
         direction = Direction.RIGHT;
-        canChangeDirection = true;
 
         head.setFill(headColor);
-        body.add(head);
+        snakeBody.add(head);
         anchorPane.getChildren().add(head);
     }
 
@@ -114,6 +114,12 @@ public class GameController implements Initializable
             if (isGameOver())
             {
                 timeline.stop();
+                double delay = 500;
+                for (Rectangle segment:snakeBody)
+                {
+                    fade(segment, Duration.millis(delay));
+                    delay /= 1.1;
+                }
             }
             canChangeDirection = true;
         }));
@@ -122,14 +128,23 @@ public class GameController implements Initializable
         timeline.play();
     }
 
+    void fade(Rectangle segment, Duration delay)
+    {
+        Timeline fade = new Timeline(new KeyFrame(Duration.millis(1000),
+                new KeyValue(segment.opacityProperty(), 0.0)));
+        fade.setRate(2);
+        fade.setDelay(delay);
+        fade.play();
+    }
+
     @FXML
     void changeDirection(KeyEvent event)
     {
         if(canChangeDirection)
         {
             if      (event.getCode().equals(KeyCode.W) && direction != Direction.DOWN)  {direction = Direction.UP;}
-            else if (event.getCode().equals(KeyCode.S) && direction != Direction.UP)    {direction = Direction.DOWN;}
             else if (event.getCode().equals(KeyCode.A) && direction != Direction.RIGHT) {direction = Direction.LEFT;}
+            else if (event.getCode().equals(KeyCode.S) && direction != Direction.UP)    {direction = Direction.DOWN;}
             else if (event.getCode().equals(KeyCode.D) && direction != Direction.LEFT)  {direction = Direction.RIGHT;}
             canChangeDirection = false;
         }
@@ -139,21 +154,22 @@ public class GameController implements Initializable
     {
         switch (direction)
         {
-            case RIGHT -> head.setLayoutX(head.getLayoutX() + entitySize);
-            case LEFT  -> head.setLayoutX(head.getLayoutX() - entitySize);
-            case UP    -> head.setLayoutY(head.getLayoutY() - entitySize);
             case DOWN  -> head.setLayoutY(head.getLayoutY() + entitySize);
+            case RIGHT -> head.setLayoutX(head.getLayoutX() + entitySize);
+            case UP    -> head.setLayoutY(head.getLayoutY() - entitySize);
+            case LEFT  -> head.setLayoutX(head.getLayoutX() - entitySize);
         }
     }
 
     void moveTail()
     {
-        if (body.size()>1)
+        if (snakeBody.size()>1)
         {
-            for (int i = body.size()-1;i > 0;i--)
+            // First time I've done a reverse loop o.o
+            for (int i = snakeBody.size()-1; i > 0; i--)
             {
-                body.get(i).setLayoutX(body.get(i-1).getLayoutX());
-                body.get(i).setLayoutY(body.get(i-1).getLayoutY());
+                snakeBody.get(i).setLayoutX(snakeBody.get(i-1).getLayoutX());
+                snakeBody.get(i).setLayoutY(snakeBody.get(i-1).getLayoutY());
             }
         }
     }
@@ -161,7 +177,7 @@ public class GameController implements Initializable
     void addTail()
     {
         Rectangle tail = new Rectangle(0,0,entitySize,entitySize);
-        body.add(tail);
+        snakeBody.add(tail);
         tail.setFill(tailColor);
         anchorPane.getChildren().add(tail);
     }
@@ -173,7 +189,7 @@ public class GameController implements Initializable
 
     boolean isFoodInSnake()
     {
-        for (Rectangle segment:body)
+        for (Rectangle segment: snakeBody)
         {
             if (food.getPosition().getLayoutX() == segment.getLayoutX() && food.getPosition().getLayoutY() == segment.getLayoutY())
             {
@@ -191,7 +207,7 @@ public class GameController implements Initializable
 
     boolean isSelfCollision()
     {
-        for (Rectangle tail:body.subList(1,body.size()))
+        for (Rectangle tail: snakeBody.subList(1, snakeBody.size()))
         {
             if (tail.getLayoutX() == head.getLayoutX() && tail.getLayoutY() == head.getLayoutY())
             {
