@@ -27,7 +27,7 @@ public class GameController implements Initializable
 
     private int score;
 
-    private final double cycleRate = 1;
+    private final double cycleRate = 0.15;
 
     private final double cycleMultiplier = 1.01;
     @FXML
@@ -57,10 +57,7 @@ public class GameController implements Initializable
     {
         gameTimeline.stop();
         graphicsTimeline.stop();
-        for (Rectangle segment:snake.getBody())
-        {
-            anchorPane.getChildren().remove(segment);
-        }
+        anchorPane.getChildren().removeAll(snake.getBody());
         direction = Direction.RIGHT;
         snake = new Snake(0,0, anchorPane);
         food.move();
@@ -135,10 +132,10 @@ public class GameController implements Initializable
     {
         if(canChangeDirection)
         {
-            if      (event.getCode().equals(KeyCode.W) && direction != Direction.DOWN)  {direction = Direction.UP;}
-            else if (event.getCode().equals(KeyCode.A) && direction != Direction.RIGHT) {direction = Direction.LEFT;}
-            else if (event.getCode().equals(KeyCode.S) && direction != Direction.UP)    {direction = Direction.DOWN;}
-            else if (event.getCode().equals(KeyCode.D) && direction != Direction.LEFT)  {direction = Direction.RIGHT;}
+            if      (event.getCode().equals(KeyCode.W) && direction != Direction.DOWN)  {direction = Direction.UP;snake.setCornerGraphics();}
+            else if (event.getCode().equals(KeyCode.A) && direction != Direction.RIGHT) {direction = Direction.LEFT;snake.setCornerGraphics();}
+            else if (event.getCode().equals(KeyCode.S) && direction != Direction.UP)    {direction = Direction.DOWN;snake.setCornerGraphics();}
+            else if (event.getCode().equals(KeyCode.D) && direction != Direction.LEFT)  {direction = Direction.RIGHT;snake.setCornerGraphics();}
             canChangeDirection = false;
         }
     }

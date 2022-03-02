@@ -78,33 +78,29 @@ public class Snake
         {
             this.body.get(i).setLayoutX(this.body.get(i-1).getLayoutX());
             this.body.get(i).setLayoutY(this.body.get(i-1).getLayoutY());
-            this.body.get(i).setRotate(this.body.get(i - 1).getRotate());
+            this.body.get(i).setRotate(this.body.get(i-1).getRotate());
         }
         setTailGraphics();
+    }
+
+    void setCornerGraphics()
+    {
+        setImage(this.body.get(1),"src/main/java/snake/snake_game/images/corner.png");
     }
 
     void setTailGraphics()
     {
         for (int i = this.body.size()-1; i > -1; i--)
         {
-            if (i>0)
+            if (i == this.body.size()-1)
             {
-                if (i == this.body.size()-1)
-                {
-                    setImage(this.body.get(i),"src/main/java/snake/snake_game/images/end.png");
-                    this.body.get(i).setRotate(this.body.get(i-1).getRotate());
-                }
-                else if (this.body.get(i+1).getRotate() - this.body.get(i-1).getRotate() == 90 ||
-                                this.body.get(i+1).getRotate() - this.body.get(i-1).getRotate() == -90 ||
-                                this.body.get(i+1).getRotate() - this.body.get(i-1).getRotate() == 270 ||
-                                this.body.get(i+1).getRotate() - this.body.get(i-1).getRotate() == -270)
-                {
-                    setImage(this.body.get(i),"src/main/java/snake/snake_game/images/corner.png");
-                }
-                else
-                {
-                    setImage(this.body.get(i), "src/main/java/snake/snake_game/images/tail.png");
-                }
+                setImage(this.body.get(i),"src/main/java/snake/snake_game/images/end.png");
+                setImage(this.body.get(i-1),"src/main/java/snake/snake_game/images/tail.png");
+                this.body.get(i).setRotate(this.body.get(i-1).getRotate());
+            }
+            else if (i != 0 && this.body.indexOf(this.body.get(i+1)) != this.body.size()-1)
+            {
+                this.body.get(i).setFill(this.body.get(i+1).getFill());
             }
         }
     }
