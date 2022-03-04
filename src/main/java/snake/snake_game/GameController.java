@@ -20,6 +20,8 @@ public class GameController implements Initializable
 {
     public static final Double entitySize = 50.;
 
+    public static final int gridSize = 12;
+
     Snake snake;
     Food food;
 
@@ -27,7 +29,7 @@ public class GameController implements Initializable
 
     private int score;
 
-    private final double cycleRate = 0.15;
+    private final double cycleRate = 1;
 
     private final double cycleMultiplier = 1.01;
     @FXML
@@ -46,6 +48,7 @@ public class GameController implements Initializable
     {
         direction = Direction.RIGHT;
         snake = new Snake(0,0, anchorPane);
+        snake.addDirectionLog(direction);
         food = new Food(0,0, anchorPane);
         food.move();
         setGameTimeline();
@@ -59,6 +62,7 @@ public class GameController implements Initializable
         graphicsTimeline.stop();
         anchorPane.getChildren().removeAll(snake.getBody());
         direction = Direction.RIGHT;
+        snake.addDirectionLog(direction);
         snake = new Snake(0,0, anchorPane);
         food.move();
         setGameTimeline();
@@ -78,10 +82,6 @@ public class GameController implements Initializable
     {
         gameTimeline = new Timeline(new KeyFrame(Duration.seconds(cycleRate), e ->
         {
-
-            System.out.println("Food: "+food.getRectangle().getLayoutX()+" "+food.getRectangle().getLayoutY());
-            System.out.println("Head: "+snake.getBody().get(0).getLayoutX()+" "+snake.getBody().get(0).getLayoutY());
-
             if (isFoodEaten())
             {
                 // Update score
@@ -132,10 +132,10 @@ public class GameController implements Initializable
     {
         if(canChangeDirection)
         {
-            if      (event.getCode().equals(KeyCode.W) && direction != Direction.DOWN)  {direction = Direction.UP;snake.setCornerGraphics();}
-            else if (event.getCode().equals(KeyCode.A) && direction != Direction.RIGHT) {direction = Direction.LEFT;snake.setCornerGraphics();}
-            else if (event.getCode().equals(KeyCode.S) && direction != Direction.UP)    {direction = Direction.DOWN;snake.setCornerGraphics();}
-            else if (event.getCode().equals(KeyCode.D) && direction != Direction.LEFT)  {direction = Direction.RIGHT;snake.setCornerGraphics();}
+            if      (event.getCode().equals(KeyCode.W) && direction != Direction.DOWN)  {direction = Direction.UP;snake.addDirectionLog(direction);}
+            else if (event.getCode().equals(KeyCode.A) && direction != Direction.RIGHT) {direction = Direction.LEFT;snake.addDirectionLog(direction);}
+            else if (event.getCode().equals(KeyCode.S) && direction != Direction.UP)    {direction = Direction.DOWN;snake.addDirectionLog(direction);}
+            else if (event.getCode().equals(KeyCode.D) && direction != Direction.LEFT)  {direction = Direction.RIGHT;snake.addDirectionLog(direction);}
             canChangeDirection = false;
         }
     }

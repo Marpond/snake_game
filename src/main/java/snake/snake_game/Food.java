@@ -26,9 +26,8 @@ public class Food
 
     public void move()
     {
-        int gridSize = 12;
-        int positionX = random.nextInt(gridSize);
-        int positionY = random.nextInt(gridSize);
+        int positionX = random.nextInt(GameController.gridSize);
+        int positionY = random.nextInt(GameController.gridSize);
         rectangle.setLayoutX(positionX * GameController.entitySize);
         rectangle.setLayoutY(positionY * GameController.entitySize);
     }
