@@ -1,0 +1,153 @@
+// If segment is corner - 8 total scenarios
+
+            // Y coordinates same
+            // X coords go to right
+            else if (!(this.body.get(i).getLayoutY() - this.body.get(i+1).getLayoutY() == 0)&&
+                    this.body.get(i).getLayoutY() - this.body.get(i-1).getLayoutY() == 0 &&
+                    this.body.get(i).getLayoutX() - this.body.get(i-1).getLayoutX() == -50.0 &&
+                    i-1 == 0)
+            {
+                isCorner = true;
+                System.out.println("Y coordinates same // X coords go to right");
+                setImage(this.body.get(i), "src/main/java/snake/snake_game/images/corner.png");
+                switch (directionLog.get(0))
+                {
+                    /*
+                    o > >
+                    ^
+                    ^
+                    */
+                    case UP -> {this.body.get(i).setRotate(0);}
+                    /*
+                    ˇ
+                    ˇ
+                    o > >
+                    */
+                    case DOWN -> {this.body.get(i).setRotate(270);}
+                }
+            }
+            // X coords same
+            // Y coords go up
+            else if (!(this.body.get(i).getLayoutX() - this.body.get(i+1).getLayoutX() == 0)&&
+                    this.body.get(i).getLayoutY() - this.body.get(i-1).getLayoutY() == 50 &&
+                    this.body.get(i).getLayoutX() - this.body.get(i-1).getLayoutX() == 0 &&
+                    i-1 == 0)
+            {
+                isCorner = true;
+                System.out.println("X coords same // Y coords go up");
+                setImage(this.body.get(i), "src/main/java/snake/snake_game/images/corner.png");
+                switch (directionLog.get(0))
+                {
+                    /*
+                        ^
+                        ^
+                    > > o
+                     */
+                    case RIGHT -> {this.body.get(i).setRotate(180);}
+                    /*
+                    ^
+                    ^
+                    o < <
+                     */
+                    case LEFT -> {this.body.get(i).setRotate(270);}
+                }
+            }
+            // Y coords same
+            // X coords go to left
+            else if (!(this.body.get(i).getLayoutY() - this.body.get(i+1).getLayoutY() == 0)&&
+                    this.body.get(i).getLayoutY() - this.body.get(i-1).getLayoutY() == 0 &&
+                    this.body.get(i).getLayoutX() - this.body.get(i-1).getLayoutX() == 50.0 &&
+                    i-1 == 0)
+            {
+                isCorner = true;
+                System.out.println("Y coords same // X coords go to left");
+                setImage(this.body.get(i), "src/main/java/snake/snake_game/images/corner.png");
+                switch (directionLog.get(0))
+                {
+                    /*
+                        ˇ
+                        ˇ
+                    < < o
+                    */
+                    case DOWN -> {this.body.get(i).setRotate(180);}
+                    /*
+                    < < o
+                        ^
+                        ^
+                     */
+                    case UP -> {this.body.get(i).setRotate(90);}
+                }
+            }
+            // X coords same
+            // Y coords go down
+            else if (!(this.body.get(i).getLayoutX() - this.body.get(i+1).getLayoutX() == 0)&&
+                    this.body.get(i).getLayoutY() - this.body.get(i-1).getLayoutY() == -50 &&
+                    this.body.get(i).getLayoutX() - this.body.get(i-1).getLayoutX() == 0 &&
+                    i-1 == 0)
+            {
+                isCorner = true;
+                System.out.println("X coords same // Y coords go down");
+                setImage(this.body.get(i), "src/main/java/snake/snake_game/images/corner.png");
+                switch (directionLog.get(0))
+                {
+                    /*
+                    > > o
+                        ˇ
+                        ˇ
+                     */
+                    case RIGHT -> {this.body.get(i).setRotate(90);}
+                    /*
+                    o < <
+                    ˇ
+                    ˇ
+                     */
+                    case LEFT -> {this.body.get(i).setRotate(0);}
+                }
+            }
+
+if (isCorner)
+                {
+                    setImage(this.body.get(i), "src/main/java/snake/snake_game/images/corner.png");
+                    switch ((int)this.body.get(i-1).getRotate())
+                    {
+                        // If corner segment is 0 degrees
+                        case 0 ->
+                                {
+                                    switch (directionLog.get(0))
+                                    {
+                                    case UP -> this.body.get(i).setRotate(0);
+                                    case LEFT -> this.body.get(i).setRotate(270);
+                                    }
+                                }
+                        case 90 ->
+                                {
+                                    switch (directionLog.get(0))
+                                    {
+                                        case UP -> this.body.get(i).setRotate(0);
+                                        case RIGHT -> this.body.get(i).setRotate(90);
+                                    }
+                                }
+                        case 180 ->
+                                {
+                                    switch (directionLog.get(0))
+                                    {
+                                        case DOWN -> this.body.get(i).setRotate(180);
+                                        case RIGHT -> this.body.get(i).setRotate(90);
+                                    }
+                                }
+                        case 270 ->
+                                {
+                                    switch (directionLog.get(0))
+                                    {
+                                        case DOWN -> this.body.get(i).setRotate(180);
+                                        case LEFT -> this.body.get(i).setRotate(270);
+                                    }
+                                }
+                    }
+                    isCorner = false;
+                }
+                else
+                {
+                    setImage(this.body.get(i), "src/main/java/snake/snake_game/images/tail.png");
+                    this.body.get(i).setRotate(this.body.get(i-1).getRotate());
+                }

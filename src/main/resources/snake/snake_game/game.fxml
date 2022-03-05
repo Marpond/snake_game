@@ -5,10 +5,13 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Text?>
 
-
-<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="snake.snake_game.GameController" onKeyPressed="#changeDirection">
+<BorderPane onKeyPressed="#changeDirection" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="snake.snake_game.GameController">
    <center>
-      <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#changeDirection" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #2e8d4b;" />
+      <AnchorPane fx:id="snakePane">
+         <children>
+            <AnchorPane fx:id="fieldPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#changeDirection" prefHeight="600.0" prefWidth="600.0" />
+         </children>
+      </AnchorPane>
    </center>
    <bottom>
       <Button mnemonicParsing="false" onMouseClicked="#reset" text="Restart" BorderPane.alignment="CENTER" />
