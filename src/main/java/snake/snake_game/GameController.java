@@ -5,7 +5,10 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -15,25 +18,21 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import java.io.File;
+import java.io.*;
 import java.net.URL;
+import java.util.Date;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class GameController implements Initializable
 {
+    public static String currentUsername;
     public static final Double entitySize = 50.;
-
     public static final int gridSize = 12;
 
-    Snake snake;
-    Food food;
-
     private Direction direction;
-
     private int score;
-
     private final double cycleRate = 0.15;
-
     private final double cycleMultiplier = 1.01;
     @FXML
     private AnchorPane fieldPane;
@@ -42,6 +41,8 @@ public class GameController implements Initializable
     @FXML
     private Text scoreText;
 
+    Snake snake;
+    Food food;
     Timeline gameTimeline;
 
     // Without this the user would be able to change direction multiple times between timeline cycles
@@ -50,6 +51,13 @@ public class GameController implements Initializable
     public static void setImage(Rectangle rectangle, String directory)
     {
         rectangle.setFill(new ImagePattern(new Image(new File(directory).toURI().toString())));
+    }
+
+    @FXML
+    private void switchToMenu() throws IOException
+    {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("menu.fxml")));
+        Main.stage.setScene(new Scene(root));
     }
 
     @Override
@@ -80,7 +88,7 @@ public class GameController implements Initializable
     {
         gameTimeline.stop();
 
-        fieldPane.getChildren().removeAll(snake.getBody());
+        snakePane.getChildren().removeAll(snake.getBody());
 
         direction = Direction.RIGHT;
 
@@ -113,17 +121,29 @@ public class GameController implements Initializable
                 // Speed up
                 gameTimeline.setRate(gameTimeline.getRate()*cycleMultiplier);
             }
+
             snake.followHead();
             snake.moveHead(direction);
 
             if (isGameOver())
             {
                 gameTimeline.stop();
+                // Fade snake
                 double delay = 500;
                 for (int i = snake.getBody().size()-1;i>-1;i--)
                 {
                     fadeSnake(i, Duration.millis(delay));
                     delay *= 0.9;
+                }
+                // Update leaderboard.csv
+                try (PrintWriter pw = new PrintWriter(new FileOutputStream(Leaderboard.file,true)))
+                {
+                    Date d = new Date();
+                    pw.println(String.join(",",new String[]{String.valueOf(d),currentUsername,scoreText.getText()}));
+                }
+                catch (FileNotFoundException ex)
+                {
+                    ex.printStackTrace();
                 }
             }
             canChangeDirection = true;
@@ -132,6 +152,8 @@ public class GameController implements Initializable
         gameTimeline.setRate(1);
         gameTimeline.play();
     }
+
+
 
     void fadeSnake(int index, Duration delay)
     {
@@ -196,10 +218,6 @@ public class GameController implements Initializable
 
     boolean isGameOver()
     {
-        if (isHitWall())
-        {
-            return true;
-        }
-        else return isSelfCollision();
+        return isHitWall() || isSelfCollision();
     }
 }

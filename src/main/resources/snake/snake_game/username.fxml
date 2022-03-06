@@ -7,6 +7,7 @@
 <AnchorPane prefHeight="645.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="snake.snake_game.UsernameController">
    <children>
       <TextField fx:id="usernameTextField" layoutX="219.0" layoutY="147.0" />
-      <Button layoutX="276.0" layoutY="309.0" mnemonicParsing="false" onAction="#switchToGame" text="Start" />
+      <Button fx:id="startBtn" layoutX="276.0" layoutY="309.0" mnemonicParsing="false" onAction="#switchToGame" text="Start" />
+      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#switchToMenu" text="back" />
    </children>
 </AnchorPane>
