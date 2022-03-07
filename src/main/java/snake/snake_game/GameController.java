@@ -27,8 +27,7 @@ import java.util.ResourceBundle;
 public class GameController implements Initializable
 {
     public static String currentUsername;
-    public static final Double entitySize = 50.;
-    public static final int gridSize = 12;
+    public static final Double entitySize = 40.;
 
     private Direction direction;
     private int score;
@@ -78,7 +77,7 @@ public class GameController implements Initializable
         snake = new Snake(0,0, snakePane);
         food = new Food(0,0, fieldPane);
 
-        food.move();
+        food.move(fieldPane);
 
         setGameTimeline();
     }
@@ -87,17 +86,11 @@ public class GameController implements Initializable
     void reset()
     {
         gameTimeline.stop();
-
         snakePane.getChildren().removeAll(snake.getBody());
-
         direction = Direction.RIGHT;
-
         snake = new Snake(0,0, snakePane);
-
-        food.move();
-
+        food.move(fieldPane);
         setGameTimeline();
-
         scoreText.setText("0");
     }
 
@@ -113,10 +106,10 @@ public class GameController implements Initializable
                 // New tail
                 snake.addTail(snakePane);
                 // New food
-                food.move();
+                food.move(fieldPane);
                 while (isFoodInSnake())
                 {
-                    food.move();
+                    food.move(fieldPane);
                 }
                 // Speed up
                 gameTimeline.setRate(gameTimeline.getRate()*cycleMultiplier);
@@ -129,11 +122,9 @@ public class GameController implements Initializable
             {
                 gameTimeline.stop();
                 // Fade snake
-                double delay = 500;
                 for (int i = snake.getBody().size()-1;i>-1;i--)
                 {
-                    fadeSnake(i, Duration.millis(delay));
-                    delay *= 0.9;
+                    fadeSnake(i);
                 }
                 // Update leaderboard.csv
                 try (PrintWriter pw = new PrintWriter(new FileOutputStream(Leaderboard.file,true)))
@@ -155,12 +146,11 @@ public class GameController implements Initializable
 
 
 
-    void fadeSnake(int index, Duration delay)
+    void fadeSnake(int index)
     {
         Timeline fade = new Timeline(new KeyFrame(Duration.millis(1000),
                 new KeyValue(snake.getBody().get(index).opacityProperty(), 0.0)));
         fade.setRate(2);
-        fade.setDelay(delay);
         fade.play();
     }
 

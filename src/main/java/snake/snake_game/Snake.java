@@ -21,7 +21,6 @@ public class Snake
         addTail(anchorPane);
         addTail(anchorPane);
     }
-
     public void addTail(AnchorPane anchorPane)
     {
         Rectangle tail = new Rectangle(0,0,GameController.entitySize,GameController.entitySize);
@@ -30,10 +29,7 @@ public class Snake
         anchorPane.getChildren().add(tail);
     }
 
-    public ArrayList<Rectangle> getBody()
-    {
-        return this.body;
-    }
+    public ArrayList<Rectangle> getBody() {return this.body;}
 
     void moveHead(Direction direction)
     {

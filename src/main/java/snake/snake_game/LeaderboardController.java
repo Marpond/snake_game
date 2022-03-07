@@ -13,9 +13,15 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
-import java.util.ResourceBundle;
-import java.util.Scanner;
+import java.util.*;
+
+class sortByScoreDescend implements Comparator<Leaderboard>
+{
+    public int compare(Leaderboard a, Leaderboard b)
+    {
+        return b.score() - a.score();
+    }
+}
 
 public class LeaderboardController implements Initializable
 {
@@ -47,6 +53,7 @@ public class LeaderboardController implements Initializable
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         score.setCellValueFactory(new PropertyValueFactory<>("score"));
 
+        list.sort(new sortByScoreDescend());
         table.setItems(list);
     }
 

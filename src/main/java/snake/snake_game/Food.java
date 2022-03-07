@@ -22,13 +22,9 @@ public class Food
         return food;
     }
 
-    public void move()
+    public void move(AnchorPane anchorPane)
     {
-        int positionX = random.nextInt(GameController.gridSize);
-        int positionY = random.nextInt(GameController.gridSize);
-        food.setLayoutX(positionX * GameController.entitySize);
-        food.setLayoutY(positionY * GameController.entitySize);
+        food.setLayoutX(random.nextInt((int) (anchorPane.getPrefWidth()/GameController.entitySize)) * GameController.entitySize);
+        food.setLayoutY(random.nextInt((int) (anchorPane.getPrefHeight()/GameController.entitySize)) * GameController.entitySize);
     }
-
-
 }

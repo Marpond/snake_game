@@ -13,7 +13,7 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class UsernameController implements Initializable
+public class NewGameController implements Initializable
 {
     @FXML
     private TextField usernameTextField;
@@ -46,8 +46,6 @@ public class UsernameController implements Initializable
     private void setTextListener()
     {
         usernameTextField.textProperty().addListener((observable, oldValue, newValue) ->
-                startBtn.setDisable(newValue.isEmpty()));
+                startBtn.setDisable(newValue.isEmpty() || usernameTextField.getText().length()>20));
     }
-
-
 }

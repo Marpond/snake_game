@@ -10,9 +10,10 @@ import java.util.Objects;
 
 public class MenuController
 {
-    public void switchToUsername() throws IOException
+    @FXML
+    private void switchToUsername() throws IOException
     {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("username.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("newgame.fxml")));
         Main.stage.setScene(new Scene(root));
     }
 
