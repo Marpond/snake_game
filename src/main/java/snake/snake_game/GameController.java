@@ -24,15 +24,15 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class GameController implements Initializable
-{
+
+public class GameController implements Initializable {
+
     public static String currentUsername;
     public static final Double entitySize = 40.;
 
     private Direction direction;
     private int score;
-    private final double cycleRate = 0.15;
-    private final double cycleMultiplier = 1.01;
+    private final double snakeSpeed = 0.15;
     @FXML
     private AnchorPane fieldPane;
     @FXML
@@ -42,7 +42,9 @@ public class GameController implements Initializable
 
     Snake snake;
     Food food;
-    Timeline gameTimeline;
+    Timeline gameTick;
+    Timeline foodReset;
+    Timeline speedReset;
 
     // Without this the user would be able to change direction multiple times between timeline cycles
     private boolean canChangeDirection;
@@ -52,19 +54,9 @@ public class GameController implements Initializable
         rectangle.setFill(new ImagePattern(new Image(new File(directory).toURI().toString())));
     }
 
-    @FXML
-    private void switchToMenu() throws IOException
-    {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("menu.fxml")));
-        Main.stage.setScene(new Scene(root));
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        snakePane.prefWidthProperty().bind(fieldPane.widthProperty());
-        snakePane.prefHeightProperty().bind(fieldPane.heightProperty());
-
         fieldPane.setBackground(new Background(new BackgroundImage(new Image(new File(
                 "src/main/java/snake/snake_game/images/bg.png").toURI().toString()),
                 BackgroundRepeat.NO_REPEAT,
@@ -74,45 +66,58 @@ public class GameController implements Initializable
 
         direction = Direction.RIGHT;
 
-        snake = new Snake(0,0, snakePane);
-        food = new Food(0,0, fieldPane);
+        snake = new Snake(0, 0, snakePane);
+        food = new Food(0, 0, fieldPane);
 
         food.move(fieldPane);
 
-        setGameTimeline();
+        setTimeline();
     }
 
-    @FXML
-    void reset()
+    void setTimeline()
     {
-        gameTimeline.stop();
-        snakePane.getChildren().removeAll(snake.getBody());
-        direction = Direction.RIGHT;
-        snake = new Snake(0,0, snakePane);
-        food.move(fieldPane);
-        setGameTimeline();
-        scoreText.setText("0");
-    }
-
-    void setGameTimeline()
-    {
-        gameTimeline = new Timeline(new KeyFrame(Duration.seconds(cycleRate), e ->
+        gameTick = new Timeline(new KeyFrame(Duration.seconds(snakeSpeed), e ->
         {
             if (isFoodEaten())
             {
+                try {foodReset.stop();} catch (Exception ignored){}
                 // Update score
                 score = Integer.parseInt(scoreText.getText());
                 scoreText.setText(String.valueOf(score+1));
                 // New tail
                 snake.addTail(snakePane);
+                // Food effects
+                switch (food.getFoodType())
+                {
+                    case SPEED ->
+                            {
+                                try {speedReset.stop();} catch (Exception ignored){}
+                                // Speed up
+                                gameTick.setRate(gameTick.getRate()*1.15);
+                                // Normal speed after 5 seconds
+                                speedReset = new Timeline(new KeyFrame(Duration.seconds(5), s -> gameTick.setRate(1)));
+                                speedReset.play();
+                            }
+                    // TODO: Increase head hit-box and visual
+                    case SIZE -> System.out.println("size");
+                }
                 // New food
-                food.move(fieldPane);
-                while (isFoodInSnake())
+                do
                 {
                     food.move(fieldPane);
                 }
-                // Speed up
-                gameTimeline.setRate(gameTimeline.getRate()*cycleMultiplier);
+                while (isFoodInSnake());
+                // New food location every 10 secs
+                foodReset = new Timeline(new KeyFrame(Duration.seconds(10), f ->
+                {
+                    do
+                    {
+                        food.move(fieldPane);
+                    }
+                    while (isFoodInSnake());
+                }));
+                foodReset.setCycleCount(Animation.INDEFINITE);
+                foodReset.play();
             }
 
             snake.followHead();
@@ -120,7 +125,7 @@ public class GameController implements Initializable
 
             if (isGameOver())
             {
-                gameTimeline.stop();
+                gameTick.stop();
                 // Fade snake
                 for (int i = snake.getBody().size()-1;i>-1;i--)
                 {
@@ -130,21 +135,23 @@ public class GameController implements Initializable
                 try (PrintWriter pw = new PrintWriter(new FileOutputStream(Leaderboard.file,true)))
                 {
                     Date d = new Date();
-                    pw.println(String.join(",",new String[]{String.valueOf(d),currentUsername,scoreText.getText()}));
+                    pw.println(String.join(",",
+                            new String[]{
+                                    String.valueOf(d),
+                                    currentUsername,
+                                    scoreText.getText()}));
                 }
-                catch (FileNotFoundException ex)
-                {
-                    ex.printStackTrace();
-                }
+                catch (FileNotFoundException ex) {ex.printStackTrace();}
+
+                try {switchToGameOver();}
+                catch (IOException ex) {ex.printStackTrace();}
             }
             canChangeDirection = true;
         }));
-        gameTimeline.setCycleCount(Animation.INDEFINITE);
-        gameTimeline.setRate(1);
-        gameTimeline.play();
+        gameTick.setCycleCount(Animation.INDEFINITE);
+        gameTick.setRate(1);
+        gameTick.play();
     }
-
-
 
     void fadeSnake(int index)
     {
@@ -209,5 +216,11 @@ public class GameController implements Initializable
     boolean isGameOver()
     {
         return isHitWall() || isSelfCollision();
+    }
+
+    private void switchToGameOver() throws IOException
+    {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("gameover.fxml")));
+        Main.stage.setScene(new Scene(root));
     }
 }

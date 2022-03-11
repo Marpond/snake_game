@@ -32,6 +32,7 @@ public class NewGameController implements Initializable
     {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("game.fxml")));
         Main.stage.setScene(new Scene(root));
+        root.requestFocus();
 
         GameController.currentUsername = usernameTextField.getText();
     }
