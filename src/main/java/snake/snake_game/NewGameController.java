@@ -1,16 +1,11 @@
 package snake.snake_game;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
-import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class NewGameController implements Initializable
@@ -28,20 +23,17 @@ public class NewGameController implements Initializable
     }
 
     @FXML
-    private void switchToGame() throws IOException
+    private void switchToGame()
     {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("game.fxml")));
-        Main.stage.setScene(new Scene(root));
-        root.requestFocus();
+        SceneController.switchTo("game");
 
         GameController.currentUsername = usernameTextField.getText();
     }
 
     @FXML
-    private void switchToMenu() throws IOException
+    private void switchToMenu()
     {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("menu.fxml")));
-        Main.stage.setScene(new Scene(root));
+        SceneController.switchTo("menu");
     }
 
     private void setTextListener()

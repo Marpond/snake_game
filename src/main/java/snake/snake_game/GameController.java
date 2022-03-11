@@ -5,10 +5,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -21,7 +18,6 @@ import javafx.util.Duration;
 import java.io.*;
 import java.net.URL;
 import java.util.Date;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 
@@ -142,9 +138,8 @@ public class GameController implements Initializable {
                                     scoreText.getText()}));
                 }
                 catch (FileNotFoundException ex) {ex.printStackTrace();}
-
-                try {switchToGameOver();}
-                catch (IOException ex) {ex.printStackTrace();}
+                // Switch to gameover scene
+                SceneController.switchTo("gameover");
             }
             canChangeDirection = true;
         }));
@@ -153,7 +148,7 @@ public class GameController implements Initializable {
         gameTick.play();
     }
 
-    void fadeSnake(int index)
+    private void fadeSnake(int index)
     {
         Timeline fade = new Timeline(new KeyFrame(Duration.millis(1000),
                 new KeyValue(snake.getBody().get(index).opacityProperty(), 0.0)));
@@ -162,7 +157,7 @@ public class GameController implements Initializable {
     }
 
     @FXML
-    void changeDirection(KeyEvent event)
+    private void changeDirection(KeyEvent event)
     {
         if(canChangeDirection)
         {
@@ -174,13 +169,13 @@ public class GameController implements Initializable {
         }
     }
 
-    boolean isFoodEaten()
+    private boolean isFoodEaten()
     {
         return food.getRectangle().getLayoutX() == snake.getBody().get(0).getLayoutX() &&
                 food.getRectangle().getLayoutY() == snake.getBody().get(0).getLayoutY();
     }
 
-    boolean isFoodInSnake()
+    private boolean isFoodInSnake()
     {
         for (Rectangle segment: snake.getBody())
         {
@@ -193,7 +188,7 @@ public class GameController implements Initializable {
         return false;
     }
 
-    boolean isHitWall()
+    private boolean isHitWall()
     {
         return snake.getBody().get(0).getLayoutX() > fieldPane.getPrefWidth() - entitySize ||
                 snake.getBody().get(0).getLayoutY() > fieldPane.getPrefHeight() - entitySize ||
@@ -201,7 +196,7 @@ public class GameController implements Initializable {
                 snake.getBody().get(0).getLayoutY() < 0;
     }
 
-    boolean isSelfCollision()
+    private boolean isSelfCollision()
     {
         for (Rectangle tail: snake.getBody().subList(1, snake.getBody().size()))
         {
@@ -213,14 +208,8 @@ public class GameController implements Initializable {
         return false;
     }
 
-    boolean isGameOver()
+    private boolean isGameOver()
     {
         return isHitWall() || isSelfCollision();
-    }
-
-    private void switchToGameOver() throws IOException
-    {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("gameover.fxml")));
-        Main.stage.setScene(new Scene(root));
     }
 }

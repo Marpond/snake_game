@@ -1,26 +1,18 @@
 package snake.snake_game;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-
-import java.io.IOException;
-import java.util.Objects;
 
 public class MenuController
 {
     @FXML
-    private void switchToUsername() throws IOException
+    private void switchToNewGame()
     {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("newgame.fxml")));
-        Main.stage.setScene(new Scene(root));
+        SceneController.switchTo("newgame");
     }
 
     @FXML
-    private void switchToLeaderboard() throws IOException
+    private void switchToLeaderboard()
     {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("leaderboard.fxml")));
-        Main.stage.setScene(new Scene(root));
+        SceneController.switchTo("leaderboard");
     }
 }

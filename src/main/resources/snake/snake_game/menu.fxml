@@ -17,7 +17,7 @@
   </rowConstraints>
    <children>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Snaek gam" textAlignment="CENTER" wrappingWidth="600.4640007019043" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-      <Button mnemonicParsing="false" onAction="#switchToUsername" text="new game" GridPane.rowIndex="1" />
+      <Button mnemonicParsing="false" onAction="#switchToNewGame" text="new game" GridPane.rowIndex="1" />
       <Button fx:id="lbBtn" mnemonicParsing="false" onAction="#switchToLeaderboard" text="leaderboard" GridPane.rowIndex="2" />
    </children>
 </GridPane>
