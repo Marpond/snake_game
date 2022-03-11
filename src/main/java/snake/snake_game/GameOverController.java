@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 public class GameOverController implements Initializable
 {
-    private final ArrayList<String> data = new ArrayList<>();
+    private final ArrayList<String> LEADERBOARD_DATA = new ArrayList<>();
     @FXML
     Text scoreText;
 
@@ -24,11 +24,11 @@ public class GameOverController implements Initializable
         {
             while (sc.hasNextLine() && !sc.next().isEmpty())
             {
-                data.add(sc.nextLine());
+                LEADERBOARD_DATA.add(sc.nextLine());
             }
         }
         catch (IOException e){e.printStackTrace();}
-        scoreText.setText(data.get(data.size()-1).split(",")[2]);
+        scoreText.setText(LEADERBOARD_DATA.get(LEADERBOARD_DATA.size()-1).split(",")[2]);
     }
 
     @FXML

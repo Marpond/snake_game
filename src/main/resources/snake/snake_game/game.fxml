@@ -4,12 +4,10 @@
 <?import javafx.scene.text.Text?>
 
 
-<AnchorPane fx:id="snakePane" maxHeight="-Infinity" maxWidth="-Infinity" onKeyPressed="#changeDirection" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="snake.snake_game.GameController">
-   <children>
-      <AnchorPane fx:id="fieldPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="600.0">
-         <children>
-            <Text fx:id="scoreText" layoutX="296.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
-         </children>
-      </AnchorPane>
-   </children>
+<AnchorPane fx:id="snakePane" maxHeight="-Infinity" maxWidth="-Infinity" onKeyPressed="#changeDirection" prefHeight="600.0"
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="snake.snake_game.GameController">
+   <AnchorPane fx:id="fieldPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="600.0">
+      <Text fx:id="scoreText" layoutX="296.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0"/>
+   </AnchorPane>
 </AnchorPane>

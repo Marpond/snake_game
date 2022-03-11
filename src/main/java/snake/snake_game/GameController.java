@@ -24,11 +24,12 @@ import java.util.ResourceBundle;
 public class GameController implements Initializable {
 
     public static String currentUsername;
-    public static final Double entitySize = 40.;
+    public static final Double ENTITY_SIZE = 40.;
 
     private Direction direction;
     private int score;
-    private final double snakeSpeed = 0.15;
+    private final double SNAKE_SPEED = 0.15;
+    private final double SPEED_MULTIPLIER = 1.2;
     @FXML
     private AnchorPane fieldPane;
     @FXML
@@ -66,17 +67,17 @@ public class GameController implements Initializable {
         food = new Food(0, 0, fieldPane);
 
         food.move(fieldPane);
+        setFoodReset();
 
         setTimeline();
     }
 
-    void setTimeline()
+    private void setTimeline()
     {
-        gameTick = new Timeline(new KeyFrame(Duration.seconds(snakeSpeed), e ->
+        gameTick = new Timeline(new KeyFrame(Duration.seconds(SNAKE_SPEED), gt ->
         {
             if (isFoodEaten())
             {
-                try {foodReset.stop();} catch (Exception ignored){}
                 // Update score
                 score = Integer.parseInt(scoreText.getText());
                 scoreText.setText(String.valueOf(score+1));
@@ -89,9 +90,9 @@ public class GameController implements Initializable {
                             {
                                 try {speedReset.stop();} catch (Exception ignored){}
                                 // Speed up
-                                gameTick.setRate(gameTick.getRate()*1.15);
+                                gameTick.setRate(gameTick.getRate()* SPEED_MULTIPLIER);
                                 // Normal speed after 5 seconds
-                                speedReset = new Timeline(new KeyFrame(Duration.seconds(5), s -> gameTick.setRate(1)));
+                                speedReset = new Timeline(new KeyFrame(Duration.seconds(5), sr -> gameTick.setRate(1)));
                                 speedReset.play();
                             }
                     // TODO: Increase head hit-box and visual
@@ -104,16 +105,7 @@ public class GameController implements Initializable {
                 }
                 while (isFoodInSnake());
                 // New food location every 10 secs
-                foodReset = new Timeline(new KeyFrame(Duration.seconds(10), f ->
-                {
-                    do
-                    {
-                        food.move(fieldPane);
-                    }
-                    while (isFoodInSnake());
-                }));
-                foodReset.setCycleCount(Animation.INDEFINITE);
-                foodReset.play();
+                setFoodReset();
             }
 
             snake.followHead();
@@ -123,12 +115,12 @@ public class GameController implements Initializable {
             {
                 gameTick.stop();
                 // Fade snake
-                for (int i = snake.getBody().size()-1;i>-1;i--)
+                for (int i = snake.getBODY().size()-1; i>-1; i--)
                 {
                     fadeSnake(i);
                 }
                 // Update leaderboard.csv
-                try (PrintWriter pw = new PrintWriter(new FileOutputStream(Leaderboard.file,true)))
+                try (PrintWriter pw = new PrintWriter(new FileOutputStream(Leaderboard.FILE,true)))
                 {
                     Date d = new Date();
                     pw.println(String.join(",",
@@ -138,8 +130,8 @@ public class GameController implements Initializable {
                                     scoreText.getText()}));
                 }
                 catch (FileNotFoundException ex) {ex.printStackTrace();}
-                // Switch to gameover scene
-                SceneController.switchTo("gameover");
+                // Switch to game-over scene after 2 seconds
+                new Timeline(new KeyFrame(Duration.seconds(2), e -> SceneController.switchTo("gameover"))).play();
             }
             canChangeDirection = true;
         }));
@@ -150,9 +142,9 @@ public class GameController implements Initializable {
 
     private void fadeSnake(int index)
     {
-        Timeline fade = new Timeline(new KeyFrame(Duration.millis(1000),
-                new KeyValue(snake.getBody().get(index).opacityProperty(), 0.0)));
-        fade.setRate(2);
+        Timeline fade = new Timeline(new KeyFrame(Duration.seconds(1.5),
+                new KeyValue(snake.getBODY().get(index).opacityProperty(), 0.0)));
+        fade.setRate(1);
         fade.play();
     }
 
@@ -171,16 +163,16 @@ public class GameController implements Initializable {
 
     private boolean isFoodEaten()
     {
-        return food.getRectangle().getLayoutX() == snake.getBody().get(0).getLayoutX() &&
-                food.getRectangle().getLayoutY() == snake.getBody().get(0).getLayoutY();
+        return food.getRECTANGLE().getLayoutX() == snake.getBODY().get(0).getLayoutX() &&
+                food.getRECTANGLE().getLayoutY() == snake.getBODY().get(0).getLayoutY();
     }
 
     private boolean isFoodInSnake()
     {
-        for (Rectangle segment: snake.getBody())
+        for (Rectangle segment: snake.getBODY())
         {
-            if (food.getRectangle().getLayoutX() == segment.getLayoutX() &&
-                    food.getRectangle().getLayoutY() == segment.getLayoutY())
+            if (food.getRECTANGLE().getLayoutX() == segment.getLayoutX() &&
+                    food.getRECTANGLE().getLayoutY() == segment.getLayoutY())
             {
                 return true;
             }
@@ -188,19 +180,34 @@ public class GameController implements Initializable {
         return false;
     }
 
+    private void setFoodReset()
+    {
+        try {foodReset.stop();} catch (Exception ignored){}
+        foodReset = new Timeline(new KeyFrame(Duration.seconds(10), fr ->
+        {
+            do
+            {
+                food.move(fieldPane);
+            }
+            while (isFoodInSnake());
+        }));
+        foodReset.setCycleCount(Animation.INDEFINITE);
+        foodReset.play();
+    }
+
     private boolean isHitWall()
     {
-        return snake.getBody().get(0).getLayoutX() > fieldPane.getPrefWidth() - entitySize ||
-                snake.getBody().get(0).getLayoutY() > fieldPane.getPrefHeight() - entitySize ||
-                snake.getBody().get(0).getLayoutX() < 0 ||
-                snake.getBody().get(0).getLayoutY() < 0;
+        return snake.getBODY().get(0).getLayoutX() > fieldPane.getPrefWidth() - ENTITY_SIZE ||
+                snake.getBODY().get(0).getLayoutY() > fieldPane.getPrefHeight() - ENTITY_SIZE ||
+                snake.getBODY().get(0).getLayoutX() < 0 ||
+                snake.getBODY().get(0).getLayoutY() < 0;
     }
 
     private boolean isSelfCollision()
     {
-        for (Rectangle tail: snake.getBody().subList(1, snake.getBody().size()))
+        for (Rectangle tail: snake.getBODY().subList(1, snake.getBODY().size()))
         {
-            if (tail.getLayoutX() == snake.getBody().get(0).getLayoutX() && tail.getLayoutY() == snake.getBody().get(0).getLayoutY())
+            if (tail.getLayoutX() == snake.getBODY().get(0).getLayoutX() && tail.getLayoutY() == snake.getBODY().get(0).getLayoutY())
             {
                 return true;
             }

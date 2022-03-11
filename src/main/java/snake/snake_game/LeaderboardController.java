@@ -24,7 +24,7 @@ class sortByScoreDescend implements Comparator<Leaderboard>
 
 public class LeaderboardController implements Initializable
 {
-    private final Scanner sc = new Scanner(Leaderboard.file);
+    private final Scanner SC = new Scanner(Leaderboard.FILE);
 
     @FXML
     private TableView<Leaderboard> table;
@@ -35,7 +35,7 @@ public class LeaderboardController implements Initializable
     @FXML
     private TableColumn<Leaderboard, Integer> score;
 
-    private final ObservableList<Leaderboard> list = FXCollections.observableArrayList();
+    private final ObservableList<Leaderboard> LIST = FXCollections.observableArrayList();
 
     public LeaderboardController() throws IOException {}
 
@@ -43,17 +43,17 @@ public class LeaderboardController implements Initializable
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
         // Load leaderboard
-        while (sc.hasNext() && !sc.next().isEmpty())
+        while (SC.hasNext() && !SC.next().isEmpty())
         {
-            String[] data = sc.nextLine().split(",");
-            list.add(new Leaderboard(data[0],data[1],Integer.parseInt(data[2])));
+            String[] data = SC.nextLine().split(",");
+            LIST.add(new Leaderboard(data[0],data[1],Integer.parseInt(data[2])));
         }
         date.setCellValueFactory(new PropertyValueFactory<>("date"));
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         score.setCellValueFactory(new PropertyValueFactory<>("score"));
 
-        list.sort(new sortByScoreDescend());
-        table.setItems(list);
+        LIST.sort(new sortByScoreDescend());
+        table.setItems(LIST);
     }
 
     @FXML

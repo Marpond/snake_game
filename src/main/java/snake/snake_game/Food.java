@@ -7,19 +7,19 @@ import java.util.Random;
 
 public class Food
 {
-    private final Rectangle rectangle;
-    private final Random random = new Random();
+    private final Rectangle RECTANGLE;
+    private final Random R = new Random();
     private FoodType foodType;
 
     public Food(double x, double y, AnchorPane anchorPane)
     {
-        this.rectangle = new Rectangle(x,y,GameController.entitySize,GameController.entitySize);
-        anchorPane.getChildren().add(this.rectangle);
+        this.RECTANGLE = new Rectangle(x,y,GameController.ENTITY_SIZE,GameController.ENTITY_SIZE);
+        anchorPane.getChildren().add(this.RECTANGLE);
     }
 
-    public Rectangle getRectangle()
+    public Rectangle getRECTANGLE()
     {
-        return this.rectangle;
+        return this.RECTANGLE;
     }
 
     public FoodType getFoodType()
@@ -29,15 +29,15 @@ public class Food
 
     public void move(AnchorPane anchorPane)
     {
-        this.rectangle.setLayoutX(random.nextInt((int) (anchorPane.getPrefWidth()/GameController.entitySize)) * GameController.entitySize);
-        this.rectangle.setLayoutY(random.nextInt((int) (anchorPane.getPrefHeight()/GameController.entitySize)) * GameController.entitySize);
+        this.RECTANGLE.setLayoutX(R.nextInt((int) (anchorPane.getPrefWidth()/GameController.ENTITY_SIZE)) * GameController.ENTITY_SIZE);
+        this.RECTANGLE.setLayoutY(R.nextInt((int) (anchorPane.getPrefHeight()/GameController.ENTITY_SIZE)) * GameController.ENTITY_SIZE);
         this.foodType = randomType();
         setGraphics();
     }
 
     private FoodType randomType()
     {
-        int x = random.nextInt(FoodType.class.getEnumConstants().length);
+        int x = R.nextInt(FoodType.class.getEnumConstants().length);
         return FoodType.class.getEnumConstants()[x];
     }
     
@@ -46,9 +46,9 @@ public class Food
         switch (this.foodType)
         {
             // TODO: Different graphics for each food
-            case NORMAL -> GameController.setImage(this.rectangle,"src/main/java/snake/snake_game/images/normalfood.png");
-            case SPEED -> GameController.setImage(this.rectangle,"src/main/java/snake/snake_game/images/speedfood.png");
-            case SIZE -> GameController.setImage(this.rectangle,"src/main/java/snake/snake_game/images/normalfood.png");
+            case NORMAL -> GameController.setImage(this.RECTANGLE,"src/main/java/snake/snake_game/images/normalfood.png");
+            case SPEED -> GameController.setImage(this.RECTANGLE,"src/main/java/snake/snake_game/images/speedfood.png");
+            case SIZE -> GameController.setImage(this.RECTANGLE,"src/main/java/snake/snake_game/images/normalfood.png");
         }
     }
 }
