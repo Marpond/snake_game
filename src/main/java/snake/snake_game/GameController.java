@@ -21,7 +21,8 @@ import java.util.Date;
 import java.util.ResourceBundle;
 
 
-public class GameController implements Initializable {
+public class GameController implements Initializable
+{
 
     public static String currentUsername;
     public static final Double ENTITY_SIZE = 40.;
