@@ -18,6 +18,7 @@ import javafx.util.Duration;
 import java.io.*;
 import java.net.URL;
 import java.util.Date;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 
@@ -27,10 +28,13 @@ public class GameController implements Initializable
     public static String currentUsername;
     public static final Double ENTITY_SIZE = 40.;
     public static int score;
+    public static boolean cursed;
 
     private Direction direction;
     private final double SNAKE_SPEED = 0.15;
     private final double SPEED_MULTIPLIER = 1.2;
+    private final int[] ROTATION = {0,90,180,270};
+    private final Random RANDOM = new Random();
     @FXML
     private AnchorPane fieldPane;
     @FXML
@@ -77,6 +81,15 @@ public class GameController implements Initializable
 
     private void setTimeline()
     {
+        if (cursed)
+        {
+            Timeline cursedTimeline = new Timeline(new KeyFrame(Duration.seconds(1), c ->
+                    snakePane.setRotate(ROTATION[RANDOM.nextInt(4)])));
+            cursedTimeline.setCycleCount(Animation.INDEFINITE);
+            cursedTimeline.setRate(1);
+            cursedTimeline.play();
+        }
+
         gameTick = new Timeline(new KeyFrame(Duration.seconds(SNAKE_SPEED), gt ->
         {
             if (isFoodEaten())

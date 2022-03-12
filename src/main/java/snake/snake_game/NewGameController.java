@@ -3,6 +3,7 @@ package snake.snake_game;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
@@ -11,6 +12,8 @@ import java.util.ResourceBundle;
 public class NewGameController implements Initializable
 {
     @FXML
+    private CheckBox cursedCheck;
+    @FXML
     private TextField usernameTextField;
     @FXML
     private Button startBtn;
@@ -18,8 +21,10 @@ public class NewGameController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        GameController.cursed = false;
         startBtn.setDisable(true);
         setTextListener();
+        setCheckListener();
     }
 
     @FXML
@@ -40,5 +45,11 @@ public class NewGameController implements Initializable
     {
         usernameTextField.textProperty().addListener((observable, oldValue, newValue) ->
                 startBtn.setDisable(newValue.isEmpty() || usernameTextField.getText().length()>20));
+    }
+
+    private void setCheckListener()
+    {
+        cursedCheck.selectedProperty().addListener((observable, oldValue, newValue) ->
+                GameController.cursed = newValue);
     }
 }
