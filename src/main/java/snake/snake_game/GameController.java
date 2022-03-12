@@ -26,9 +26,9 @@ public class GameController implements Initializable
 
     public static String currentUsername;
     public static final Double ENTITY_SIZE = 40.;
+    public static int score;
 
     private Direction direction;
-    private int score;
     private final double SNAKE_SPEED = 0.15;
     private final double SPEED_MULTIPLIER = 1.2;
     @FXML
@@ -55,6 +55,8 @@ public class GameController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        score = 0;
+
         fieldPane.setBackground(new Background(new BackgroundImage(new Image(new File(
                 "src/main/java/snake/snake_game/images/bg.png").toURI().toString()),
                 BackgroundRepeat.NO_REPEAT,
@@ -80,8 +82,8 @@ public class GameController implements Initializable
             if (isFoodEaten())
             {
                 // Update score
-                score = Integer.parseInt(scoreText.getText());
-                scoreText.setText(String.valueOf(score+1));
+                score++;
+                scoreText.setText(String.valueOf(score));
                 // New tail
                 snake.addTail(snakePane);
                 // Food effects
@@ -120,17 +122,8 @@ public class GameController implements Initializable
                 {
                     fadeSnake(i);
                 }
-                // Update leaderboard.csv
-                try (PrintWriter pw = new PrintWriter(new FileOutputStream(Leaderboard.FILE,true)))
-                {
-                    Date d = new Date();
-                    pw.println(String.join(",",
-                            new String[]{
-                                    String.valueOf(d),
-                                    currentUsername,
-                                    scoreText.getText()}));
-                }
-                catch (FileNotFoundException ex) {ex.printStackTrace();}
+
+                updateLeaderboard();
                 // Switch to game-over scene after 2 seconds
                 new Timeline(new KeyFrame(Duration.seconds(2), e -> SceneController.switchTo("gameover"))).play();
             }
@@ -160,6 +153,20 @@ public class GameController implements Initializable
             else if (event.getCode().equals(KeyCode.D) && direction != Direction.LEFT)  {direction = Direction.RIGHT;}
             canChangeDirection = false;
         }
+    }
+
+    private void updateLeaderboard()
+    {
+        try (PrintWriter pw = new PrintWriter(new FileOutputStream(Leaderboard.FILE,true)))
+        {
+            Date d = new Date();
+            pw.println(String.join(",",
+                    new String[]{
+                            String.valueOf(d),
+                            currentUsername,
+                            scoreText.getText()}));
+        }
+        catch (FileNotFoundException ex) {ex.printStackTrace();}
     }
 
     private boolean isFoodEaten()
