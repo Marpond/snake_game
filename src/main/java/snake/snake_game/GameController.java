@@ -42,11 +42,11 @@ public class GameController implements Initializable
     @FXML
     private Text scoreText;
 
-    Snake snake;
-    Food food;
-    Timeline gameTick;
-    Timeline foodReset;
-    Timeline speedReset;
+    private Snake snake;
+    private Food food;
+    private Timeline gameTick;
+    private Timeline foodReset;
+    private Timeline speedReset;
 
     // Without this the user would be able to change direction multiple times between timeline cycles
     private boolean canChangeDirection;
@@ -76,10 +76,10 @@ public class GameController implements Initializable
         food.move(fieldPane);
         setFoodReset();
 
-        setTimeline();
+        setGameTick();
     }
 
-    private void setTimeline()
+    private void setGameTick()
     {
         if (cursed)
         {

@@ -8,7 +8,7 @@ import java.util.Random;
 public class Food
 {
     private final Rectangle RECTANGLE;
-    private final Random R = new Random();
+    private final Random RANDOM = new Random();
     private FoodType foodType;
 
     public Food(double x, double y, AnchorPane anchorPane)
@@ -29,15 +29,15 @@ public class Food
 
     public void move(AnchorPane anchorPane)
     {
-        this.RECTANGLE.setLayoutX(R.nextInt((int) (anchorPane.getPrefWidth()/GameController.ENTITY_SIZE)) * GameController.ENTITY_SIZE);
-        this.RECTANGLE.setLayoutY(R.nextInt((int) (anchorPane.getPrefHeight()/GameController.ENTITY_SIZE)) * GameController.ENTITY_SIZE);
+        this.RECTANGLE.setLayoutX(RANDOM.nextInt((int) (anchorPane.getPrefWidth()/GameController.ENTITY_SIZE)) * GameController.ENTITY_SIZE);
+        this.RECTANGLE.setLayoutY(RANDOM.nextInt((int) (anchorPane.getPrefHeight()/GameController.ENTITY_SIZE)) * GameController.ENTITY_SIZE);
         this.foodType = randomType();
         setGraphics();
     }
 
     private FoodType randomType()
     {
-        int x = R.nextInt(FoodType.class.getEnumConstants().length);
+        int x = RANDOM.nextInt(FoodType.class.getEnumConstants().length);
         return FoodType.class.getEnumConstants()[x];
     }
     

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>snake.snake_game.Snake</OriginalElement>
+  <nodes>
+    <node x="142.5" y="523.0">snake.snake_game.GameController</node>
+    <node x="654.6423076923074" y="0.0">snake.snake_game.Main</node>
+    <node x="36.5" y="0.0">snake.snake_game.FoodType</node>
+    <node x="735.351282051282" y="971.0">snake.snake_game.GameOverController</node>
+    <node x="0.0" y="187.0">snake.snake_game.Food</node>
+    <node x="332.89230769230744" y="0.0">snake.snake_game.Direction</node>
+    <node x="1047.351282051282" y="983.5">snake.snake_game.LeaderboardController</node>
+    <node x="638.851282051282" y="648.5">snake.snake_game.MenuController</node>
+    <node x="294.25" y="946.0">snake.snake_game.NewGameController</node>
+    <node x="989.6423076923074" y="661.0">snake.snake_game.sortByScoreDescend</node>
+    <node x="288.0" y="199.5">snake.snake_game.Snake</node>
+    <node x="647.1423076923074" y="263.0">snake.snake_game.SceneController</node>
+    <node x="1148.6653846153845" y="162.0">snake.snake_game.Leaderboard</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="snake.snake_game.sortByScoreDescend" target="snake.snake_game.Leaderboard" relationship="DEPENDENCY">
+      <point x="0.0" y="-42.5" />
+      <point x="1141.1423076923074" y="481.0" />
+      <point x="1187.332051282051" y="481.0" />
+      <point x="-77.33333333333331" y="143.5" />
+    </edge>
+    <edge source="snake.snake_game.NewGameController" target="snake.snake_game.GameController" relationship="DEPENDENCY">
+      <point x="0.0" y="-92.5" />
+      <point x="429.25" y="915.0" />
+      <point x="277.5" y="915.0" />
+      <point x="0.0" y="180.5" />
+    </edge>
+    <edge source="snake.snake_game.Food" target="snake.snake_game.FoodType" relationship="TO_ONE">
+      <point x="-66.5" y="-118.5" />
+      <point x="66.5" y="141.0" />
+      <point x="84.75" y="141.0" />
+      <point x="-48.25" y="55.0" />
+    </edge>
+    <edge source="snake.snake_game.Food" target="snake.snake_game.GameController" relationship="DEPENDENCY">
+      <point x="88.66666666666674" y="118.5" />
+      <point x="221.66666666666674" y="471.0" />
+      <point x="547.3512820512819" y="471.0" />
+      <point x="547.3512820512819" y="501.0" />
+      <point x="367.5" y="501.0" />
+      <point x="90.0" y="-180.5" />
+    </edge>
+    <edge source="snake.snake_game.NewGameController" target="snake.snake_game.SceneController" relationship="DEPENDENCY">
+      <point x="0.0" y="-92.5" />
+      <point x="429.25" y="925.0" />
+      <point x="580.3512820512819" y="925.0" />
+      <point x="580.3512820512819" y="501.0" />
+      <point x="735.6423076923074" y="501.0" />
+      <point x="0.0" y="42.5" />
+    </edge>
+    <edge source="snake.snake_game.Snake" target="snake.snake_game.Direction" relationship="DEPENDENCY">
+      <point x="0.0" y="-106.0" />
+      <point x="424.0" y="141.0" />
+      <point x="500.64230769230744" y="141.0" />
+      <point x="500.64230769230744" y="131.0" />
+      <point x="474.64230769230744" y="131.0" />
+      <point x="47.25" y="55.0" />
+    </edge>
+    <edge source="snake.snake_game.GameOverController" target="snake.snake_game.GameController" relationship="DEPENDENCY">
+      <point x="0.0" y="-67.5" />
+      <point x="870.351282051282" y="905.0" />
+      <point x="277.5" y="905.0" />
+      <point x="0.0" y="180.5" />
+    </edge>
+    <edge source="snake.snake_game.GameController" target="snake.snake_game.Snake" relationship="CREATE">
+      <point x="-90.0" y="-180.5" />
+      <point x="187.5" y="501.0" />
+      <point x="182.97692307692307" y="501.0" />
+      <point x="182.97692307692307" y="491.0" />
+      <point x="333.3333333333333" y="491.0" />
+      <point x="-90.66666666666667" y="106.0" />
+    </edge>
+    <edge source="snake.snake_game.SceneController" target="snake.snake_game.Main" relationship="DEPENDENCY">
+      <point x="0.0" y="-42.5" />
+      <point x="0.0" y="55.0" />
+    </edge>
+    <edge source="snake.snake_game.GameController" target="snake.snake_game.Food" relationship="TO_ONE">
+      <point x="0.0" y="-180.5" />
+      <point x="277.5" y="481.0" />
+      <point x="133.0" y="481.0" />
+      <point x="0.0" y="118.5" />
+    </edge>
+    <edge source="snake.snake_game.GameController" target="snake.snake_game.Direction" relationship="DEPENDENCY">
+      <point x="90.0" y="-180.5" />
+      <point x="367.5" y="501.0" />
+      <point x="547.3512820512819" y="501.0" />
+      <point x="547.3512820512819" y="471.0" />
+      <point x="570.5" y="471.0" />
+      <point x="570.5" y="141.0" />
+      <point x="500.64230769230744" y="141.0" />
+      <point x="500.64230769230744" y="131.0" />
+      <point x="474.64230769230744" y="131.0" />
+      <point x="47.25" y="55.0" />
+    </edge>
+    <edge source="snake.snake_game.GameOverController" target="snake.snake_game.SceneController" relationship="DEPENDENCY">
+      <point x="0.0" y="-67.5" />
+      <point x="870.351282051282" y="501.0" />
+      <point x="735.6423076923074" y="501.0" />
+      <point x="0.0" y="42.5" />
+    </edge>
+    <edge source="snake.snake_game.GameController" target="snake.snake_game.Leaderboard" relationship="DEPENDENCY">
+      <point x="90.0" y="-180.5" />
+      <point x="367.5" y="501.0" />
+      <point x="547.3512820512819" y="501.0" />
+      <point x="547.3512820512819" y="491.0" />
+      <point x="1141.1423076923074" y="491.0" />
+      <point x="1141.1423076923074" y="481.0" />
+      <point x="1187.332051282051" y="481.0" />
+      <point x="-77.33333333333331" y="143.5" />
+    </edge>
+    <edge source="snake.snake_game.LeaderboardController" target="snake.snake_game.Leaderboard" relationship="CREATE">
+      <point x="0.0" y="-55.0" />
+      <point x="1182.351282051282" y="925.0" />
+      <point x="1203.5410256410255" y="925.0" />
+      <point x="1203.5410256410255" y="915.0" />
+      <point x="1303.1423076923074" y="915.0" />
+      <point x="1303.1423076923074" y="501.0" />
+      <point x="1264.6653846153845" y="501.0" />
+      <point x="0.0" y="143.5" />
+    </edge>
+    <edge source="snake.snake_game.Food" target="snake.snake_game.FoodType" relationship="DEPENDENCY">
+      <point x="66.5" y="-118.5" />
+      <point x="199.5" y="141.0" />
+      <point x="181.25" y="141.0" />
+      <point x="48.25" y="55.0" />
+    </edge>
+    <edge source="snake.snake_game.LeaderboardController" target="snake.snake_game.SceneController" relationship="DEPENDENCY">
+      <point x="-90.0" y="-55.0" />
+      <point x="1092.351282051282" y="925.0" />
+      <point x="923.9987179487177" y="925.0" />
+      <point x="923.9987179487177" y="501.0" />
+      <point x="735.6423076923074" y="501.0" />
+      <point x="0.0" y="42.5" />
+    </edge>
+    <edge source="snake.snake_game.GameController" target="snake.snake_game.Snake" relationship="TO_ONE">
+      <point x="0.0" y="-180.5" />
+      <point x="277.5" y="481.0" />
+      <point x="424.0" y="481.0" />
+      <point x="0.0" y="106.0" />
+    </edge>
+    <edge source="snake.snake_game.GameController" target="snake.snake_game.Direction" relationship="TO_ONE">
+      <point x="0.0" y="-180.5" />
+      <point x="277.5" y="141.0" />
+      <point x="380.14230769230744" y="141.0" />
+      <point x="-47.25" y="55.0" />
+    </edge>
+    <edge source="snake.snake_game.Snake" target="snake.snake_game.GameController" relationship="DEPENDENCY">
+      <point x="90.66666666666669" y="106.0" />
+      <point x="514.6666666666667" y="471.0" />
+      <point x="547.3512820512819" y="471.0" />
+      <point x="547.3512820512819" y="501.0" />
+      <point x="367.5" y="501.0" />
+      <point x="90.0" y="-180.5" />
+    </edge>
+    <edge source="snake.snake_game.GameController" target="snake.snake_game.Food" relationship="CREATE">
+      <point x="-90.0" y="-180.5" />
+      <point x="187.5" y="501.0" />
+      <point x="182.97692307692307" y="501.0" />
+      <point x="182.97692307692307" y="491.0" />
+      <point x="44.33333333333337" y="491.0" />
+      <point x="-88.66666666666663" y="118.5" />
+    </edge>
+    <edge source="snake.snake_game.GameController" target="snake.snake_game.SceneController" relationship="DEPENDENCY">
+      <point x="90.0" y="-180.5" />
+      <point x="367.5" y="501.0" />
+      <point x="547.3512820512819" y="501.0" />
+      <point x="547.3512820512819" y="481.0" />
+      <point x="735.6423076923074" y="481.0" />
+      <point x="0.0" y="42.5" />
+    </edge>
+    <edge source="snake.snake_game.MenuController" target="snake.snake_game.SceneController" relationship="DEPENDENCY">
+      <point x="0.0" y="-55.0" />
+      <point x="749.351282051282" y="501.0" />
+      <point x="735.6423076923074" y="501.0" />
+      <point x="0.0" y="42.5" />
+    </edge>
+    <edge source="snake.snake_game.LeaderboardController" target="snake.snake_game.sortByScoreDescend" relationship="CREATE">
+      <point x="0.0" y="-55.0" />
+      <point x="1182.351282051282" y="925.0" />
+      <point x="1203.5410256410255" y="925.0" />
+      <point x="1203.5410256410255" y="915.0" />
+      <point x="1141.1423076923074" y="915.0" />
+      <point x="0.0" y="42.5" />
+    </edge>
+    <edge source="snake.snake_game.LeaderboardController" target="snake.snake_game.Leaderboard" relationship="TO_MANY">
+      <point x="90.0" y="-55.0" />
+      <point x="1272.351282051282" y="925.0" />
+      <point x="1314.1423076923074" y="925.0" />
+      <point x="1314.1423076923074" y="501.0" />
+      <point x="1341.9987179487175" y="501.0" />
+      <point x="77.33333333333331" y="143.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.7" showDependencies="true" x="744.8571428571429" y="573.1428571428572" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
