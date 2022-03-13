@@ -111,8 +111,20 @@ public class GameController implements Initializable
                                 speedReset = new Timeline(new KeyFrame(Duration.seconds(5), sr -> gameTick.setRate(1)));
                                 speedReset.play();
                             }
-                    // TODO: Increase head hit-box and visual
-                    case SIZE -> System.out.println("size");
+                    // TODO: Increase head hit-box
+                    case SIZE ->
+                            {
+                                if (snake.getBODY().get(0).getHeight() != ENTITY_SIZE*2)
+                                {
+                                    snake.getBODY().get(0).setHeight(ENTITY_SIZE*2);
+                                    snake.getBODY().get(0).setWidth(ENTITY_SIZE*2);
+                                    new Timeline(new KeyFrame(Duration.seconds(2), e ->
+                                    {
+                                        snake.getBODY().get(0).setHeight(ENTITY_SIZE);
+                                        snake.getBODY().get(0).setWidth(ENTITY_SIZE);
+                                    })).play();
+                                }
+                            }
                 }
                 // New food
                 do
