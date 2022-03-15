@@ -4,7 +4,7 @@
 <?import javafx.scene.text.*?>
 
 <AnchorPane fx:id="snakePane" maxHeight="-Infinity" maxWidth="-Infinity" onKeyPressed="#changeDirection" prefHeight="600.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="snake.snake_game.GameController">
-   <AnchorPane fx:id="fieldPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="600.0">
-      <Text fx:id="scoreText" layoutX="209.0" layoutY="62.0" nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="font" text="0" textAlignment="CENTER" wrappingWidth="182.0" />
+   <AnchorPane fx:id="fieldPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" styleClass="gamebg" stylesheets="@style.css">
+      <Text fx:id="scoreText" fill="WHITE" layoutX="209.0" layoutY="62.0" nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="font" text="0" textAlignment="CENTER" wrappingWidth="182.0" />
    </AnchorPane>
 </AnchorPane>

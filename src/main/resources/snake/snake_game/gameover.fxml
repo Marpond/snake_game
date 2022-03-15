@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="snake.snake_game.GameOverController">
-   <Text layoutX="165.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="font" text="Game over" />
-   <Button layoutX="221.0" layoutY="464.0" mnemonicParsing="false" onAction="#switchToMenu" styleClass="font" text="Back" />
-   <Button layoutX="176.0" layoutY="353.0" mnemonicParsing="false" onAction="#switchToGame" styleClass="font" text="Restart" />
-   <Text fx:id="scoreText" layoutX="177.0" layoutY="233.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="font" textAlignment="CENTER" wrappingWidth="246.0" />
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="600.0" styleClass="deathbg" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="snake.snake_game.GameOverController">
+   <Text fill="WHITE" layoutX="188.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="font" text="Game over" />
+   <Button contentDisplay="TEXT_ONLY" layoutX="233.0" layoutY="379.0" mnemonicParsing="false" onAction="#switchToMenu" text="Back">
+      <styleClass>
+         <String fx:value="font" />
+         <String fx:value="blackbg" />
+      </styleClass></Button>
+   <Button contentDisplay="TEXT_ONLY" layoutX="197.0" layoutY="278.0" mnemonicParsing="false" onAction="#switchToGame" text="Restart">
+      <styleClass>
+         <String fx:value="font" />
+         <String fx:value="blackbg" />
+      </styleClass></Button>
+   <Text fx:id="scoreText" fill="WHITE" layoutX="177.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="font" text="score" textAlignment="CENTER" wrappingWidth="246.0" />
+   <effect>
+      <SepiaTone level="0.2" />
+   </effect>
 </AnchorPane>

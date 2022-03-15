@@ -5,17 +5,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.layout.*;
 
-import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class NewGameController implements Initializable
 {
-    @FXML
-    private AnchorPane anchorPane;
     @FXML
     private CheckBox cursedCheck;
     @FXML
@@ -26,12 +21,6 @@ public class NewGameController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        anchorPane.setBackground(new Background(new BackgroundImage(new Image(new File(
-                "src/main/java/snake/snake_game/images/gridbg.png").toURI().toString()),
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.DEFAULT,
-                BackgroundSize.DEFAULT)));
         GameController.cursed = false;
         startBtn.setDisable(true);
         setTextListener();
@@ -55,7 +44,7 @@ public class NewGameController implements Initializable
     private void setTextListener()
     {
         usernameTextField.textProperty().addListener((observable, oldValue, newValue) ->
-                startBtn.setDisable(newValue.isEmpty() || usernameTextField.getText().length()>20));
+                startBtn.setDisable(newValue.isEmpty() || usernameTextField.getText().length()>16));
     }
 
     private void setCheckListener()

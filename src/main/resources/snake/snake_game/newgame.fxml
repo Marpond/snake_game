@@ -1,12 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="snake.snake_game.NewGameController">
-   <TextField fx:id="usernameTextField" layoutX="219.0" layoutY="147.0" />
-   <Button fx:id="startBtn" layoutX="276.0" layoutY="309.0" mnemonicParsing="false" onAction="#switchToGame" text="Start" />
-   <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#switchToMenu" text="back" />
+<AnchorPane prefHeight="600.0" prefWidth="600.0" styleClass="gridbg" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="snake.snake_game.NewGameController">
+   <TextField fx:id="usernameTextField" layoutX="171.0" layoutY="160.0" prefHeight="29.0" prefWidth="260.0" style="-fx-font-size: 14;">
+      <styleClass>
+         <String fx:value="blackbg" />
+         <String fx:value="font" />
+      </styleClass></TextField>
+   <Button fx:id="startBtn" layoutX="221.0" layoutY="278.0" mnemonicParsing="false" onAction="#switchToGame" text="Start">
+      <styleClass>
+         <String fx:value="font" />
+         <String fx:value="blackbg" />
+      </styleClass></Button>
+   <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#switchToMenu" text="back">
+      <styleClass>
+         <String fx:value="font" />
+         <String fx:value="blackbg" />
+      </styleClass></Button>
    <CheckBox fx:id="cursedCheck" layoutX="14.0" layoutY="568.0" mnemonicParsing="false" />
+   <effect>
+      <SepiaTone level="0.2" />
+   </effect>
 </AnchorPane>

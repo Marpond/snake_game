@@ -6,5 +6,28 @@
 .font
 {
     -fx-font-family: "Public Pixel";
-    -fx-font-size: 30;
+    -fx-stroke: black;
+    -fx-stroke-width: 4px;
+    -fx-font-size: 25;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+
+}
+
+.blackbg
+{
+    -fx-background-color: black;
+}
+
+.gridbg
+{
+    -fx-background-image: url("bgs/gridbg.png");
+}
+.deathbg
+{
+    -fx-background-image: url("bgs/deathbg.png");
+}
+.gamebg
+{
+    -fx-background-image: url("bgs/gamebg.png");
 }

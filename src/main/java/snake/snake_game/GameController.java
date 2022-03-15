@@ -61,13 +61,6 @@ public class GameController implements Initializable
     {
         score = 0;
 
-        fieldPane.setBackground(new Background(new BackgroundImage(new Image(new File(
-                "src/main/java/snake/snake_game/images/bg.png").toURI().toString()),
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.DEFAULT,
-                BackgroundSize.DEFAULT)));
-
         direction = Direction.RIGHT;
 
         snake = new Snake(0, 0, snakePane);
