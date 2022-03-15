@@ -1,0 +1,10 @@
+@font-face
+{
+    src: url('PublicPixel-0W6DP.ttf');
+}
+
+.font
+{
+    -fx-font-family: "Public Pixel";
+    -fx-font-size: 30;
+}

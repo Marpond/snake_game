@@ -4,10 +4,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="snake.snake_game.GameOverController">
-   <Text layoutX="267.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Game over"/>
-   <Button layoutX="277.0" layoutY="484.0" mnemonicParsing="false" onAction="#switchToMenu" text="back"/>
-   <Button layoutX="271.0" layoutY="365.0" mnemonicParsing="false" onAction="#switchToGame" text="restart"/>
-   <Text fx:id="scoreText" layoutX="290.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="22.0"/>
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="snake.snake_game.GameOverController">
+   <Text layoutX="165.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="font" text="Game over" />
+   <Button layoutX="221.0" layoutY="464.0" mnemonicParsing="false" onAction="#switchToMenu" styleClass="font" text="Back" />
+   <Button layoutX="176.0" layoutY="353.0" mnemonicParsing="false" onAction="#switchToGame" styleClass="font" text="Restart" />
+   <Text fx:id="scoreText" layoutX="177.0" layoutY="233.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="font" textAlignment="CENTER" wrappingWidth="246.0" />
 </AnchorPane>

@@ -7,7 +7,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
@@ -27,6 +30,8 @@ public class LeaderboardController implements Initializable
     private final Scanner SC = new Scanner(Leaderboard.FILE);
 
     @FXML
+    private AnchorPane anchorPane;
+    @FXML
     private TableView<Leaderboard> table;
     @FXML
     private TableColumn<Leaderboard, String> date;
@@ -42,6 +47,12 @@ public class LeaderboardController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        anchorPane.setBackground(new Background(new BackgroundImage(new Image(new File(
+                "src/main/java/snake/snake_game/images/gridbg.png").toURI().toString()),
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT)));
         // Load leaderboard
         while (SC.hasNext() && !SC.next().isEmpty())
         {

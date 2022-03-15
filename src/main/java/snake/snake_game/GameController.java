@@ -106,9 +106,9 @@ public class GameController implements Initializable
                             {
                                 try {speedReset.stop();} catch (Exception ignored){}
                                 // Speed up
-                                gameTick.setRate(gameTick.getRate()* SPEED_MULTIPLIER);
-                                // Normal speed after 5 seconds
-                                speedReset = new Timeline(new KeyFrame(Duration.seconds(5), sr -> gameTick.setRate(1)));
+                                gameTick.setRate(gameTick.getRate() * SPEED_MULTIPLIER);
+                                // Normal speed after 3 seconds
+                                speedReset = new Timeline(new KeyFrame(Duration.seconds(3), sr -> gameTick.setRate(1)));
                                 speedReset.play();
                             }
                     // TODO: Increase head hit-box

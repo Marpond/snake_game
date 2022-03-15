@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="snake.snake_game.MenuController">
+<GridPane fx:id="gridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="snake.snake_game.MenuController">
     <columnConstraints>
         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     </columnConstraints>
@@ -13,7 +15,7 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
-    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Snake game" textAlignment="CENTER" wrappingWidth="600.4640007019043" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-    <Button mnemonicParsing="false" onAction="#switchToNewGame" text="new game" GridPane.rowIndex="1" />
-    <Button mnemonicParsing="false" onAction="#switchToLeaderboard" text="leaderboard" GridPane.rowIndex="2" />
+    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="font" text="Snake game" textAlignment="CENTER" wrappingWidth="600.4640007019043" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+    <Button mnemonicParsing="false" onAction="#switchToNewGame" styleClass="font" text="New game" GridPane.rowIndex="1" />
+    <Button mnemonicParsing="false" onAction="#switchToLeaderboard" styleClass="font" text="Leaderboard" GridPane.rowIndex="2" />
 </GridPane>
