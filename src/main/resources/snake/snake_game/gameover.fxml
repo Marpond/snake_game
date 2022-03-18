@@ -8,7 +8,7 @@
 
 <AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="600.0" styleClass="deathbg" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="snake.snake_game.GameOverController">
    <Text fill="WHITE" layoutX="188.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="font" text="Game over" />
-   <Button contentDisplay="TEXT_ONLY" layoutX="233.0" layoutY="379.0" mnemonicParsing="false" onAction="#switchToMenu" text="Back">
+   <Button contentDisplay="TEXT_ONLY" layoutX="272.0" layoutY="379.0" mnemonicParsing="false" onAction="#switchToMenu" text="&lt;">
       <styleClass>
          <String fx:value="font" />
          <String fx:value="blackbg" />

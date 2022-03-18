@@ -44,7 +44,7 @@ public class NewGameController implements Initializable
     private void setTextListener()
     {
         usernameTextField.textProperty().addListener((observable, oldValue, newValue) ->
-                startBtn.setDisable(newValue.isEmpty() || usernameTextField.getText().length()>16));
+                startBtn.setDisable(newValue.isEmpty() || usernameTextField.getText().length()>15));
     }
 
     private void setCheckListener()

@@ -7,7 +7,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,8 +26,6 @@ public class LeaderboardController implements Initializable
 {
     private final Scanner SC = new Scanner(Leaderboard.FILE);
 
-    @FXML
-    private AnchorPane anchorPane;
     @FXML
     private TableView<Leaderboard> table;
     @FXML
@@ -57,6 +54,13 @@ public class LeaderboardController implements Initializable
 
         LIST.sort(new sortByScoreDescend());
         table.setItems(LIST);
+
+        date.setResizable(false);
+        name.setResizable(false);
+        score.setResizable(false);
+        date.setSortable(false);
+        name.setSortable(false);
+        score.setSortable(false);
     }
 
     @FXML

@@ -5,9 +5,10 @@
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="600.0" styleClass="gridbg" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="snake.snake_game.LeaderboardController">
+<AnchorPane prefHeight="600.0" prefWidth="600.0" styleClass="gridbg" stylesheets="@style.css" xmlns="http://javafx.com/javafx/16"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="snake.snake_game.LeaderboardController">
    <children>
-      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#switchToMenu" text="back" textFill="WHITE">
+      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#switchToMenu" text="&lt;" textFill="WHITE">
          <styleClass>
             <String fx:value="font" />
             <String fx:value="blackbg" />
