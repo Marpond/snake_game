@@ -15,7 +15,6 @@ public class Obstacle
     {
         this.RECTANGLE = new Rectangle(x,y,GameController.entitySize,GameController.entitySize);
         GameController.setImage(this.RECTANGLE,"src/main/java/snake/snake_game/images/obstacle.png");
-        obstacles.add(this.RECTANGLE);
         anchorPane.getChildren().add(this.RECTANGLE);
         do
         {
@@ -30,6 +29,7 @@ public class Obstacle
                 (this.RECTANGLE.getLayoutX()-snakeBody.get(0).getLayoutX() < 200) // If it's within 4 blocks relative to the head
                 ||
                 isStacked(this.RECTANGLE,obstacles)); // If it's inside an obstacle
+        obstacles.add(this.RECTANGLE);
     }
 
     private void move(AnchorPane anchorPane)
