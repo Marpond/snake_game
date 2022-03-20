@@ -13,7 +13,7 @@ public class Obstacle
 
     public Obstacle(double x, double y, AnchorPane anchorPane, ArrayList<Rectangle> snakeBody, Food food, ArrayList<Rectangle> obstacles)
     {
-        this.RECTANGLE = new Rectangle(x,y,GameController.ENTITY_SIZE,GameController.ENTITY_SIZE);
+        this.RECTANGLE = new Rectangle(x,y,GameController.entitySize,GameController.entitySize);
         GameController.setImage(this.RECTANGLE,"src/main/java/snake/snake_game/images/obstacle.png");
         obstacles.add(this.RECTANGLE);
         anchorPane.getChildren().add(this.RECTANGLE);
@@ -32,7 +32,7 @@ public class Obstacle
 
     private void move(AnchorPane anchorPane)
     {
-        this.RECTANGLE.setLayoutX(RANDOM.nextInt((int) (anchorPane.getPrefWidth()/GameController.ENTITY_SIZE)) * GameController.ENTITY_SIZE);
-        this.RECTANGLE.setLayoutY(RANDOM.nextInt((int) (anchorPane.getPrefHeight()/GameController.ENTITY_SIZE)) * GameController.ENTITY_SIZE);
+        this.RECTANGLE.setLayoutX(RANDOM.nextInt((int) (anchorPane.getPrefWidth()/GameController.entitySize)) * GameController.entitySize);
+        this.RECTANGLE.setLayoutY(RANDOM.nextInt((int) (anchorPane.getPrefHeight()/GameController.entitySize)) * GameController.entitySize);
     }
 }

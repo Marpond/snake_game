@@ -19,7 +19,7 @@ public class Food
 
     public Food(double x, double y, AnchorPane anchorPane)
     {
-        this.RECTANGLE = new Rectangle(x,y,GameController.ENTITY_SIZE,GameController.ENTITY_SIZE);
+        this.RECTANGLE = new Rectangle(x,y,GameController.entitySize,GameController.entitySize);
         anchorPane.getChildren().add(this.RECTANGLE);
 
         this.FOOD_TYPES.add(FoodType.NORMAL);
@@ -50,8 +50,8 @@ public class Food
 
     public void move(AnchorPane anchorPane)
     {
-        this.RECTANGLE.setLayoutX(RANDOM.nextInt((int) (anchorPane.getPrefWidth()/GameController.ENTITY_SIZE)) * GameController.ENTITY_SIZE);
-        this.RECTANGLE.setLayoutY(RANDOM.nextInt((int) (anchorPane.getPrefHeight()/GameController.ENTITY_SIZE)) * GameController.ENTITY_SIZE);
+        this.RECTANGLE.setLayoutX(RANDOM.nextInt((int) (anchorPane.getPrefWidth()/GameController.entitySize)) * GameController.entitySize);
+        this.RECTANGLE.setLayoutY(RANDOM.nextInt((int) (anchorPane.getPrefHeight()/GameController.entitySize)) * GameController.entitySize);
         this.foodType = randomType();
         setGraphics();
     }

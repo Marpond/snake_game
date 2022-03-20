@@ -12,7 +12,7 @@ public class Snake
     public Snake(double x, double y, AnchorPane anchorPane)
     {
         // Create head
-        Rectangle head = new Rectangle(x, y, GameController.ENTITY_SIZE, GameController.ENTITY_SIZE);
+        Rectangle head = new Rectangle(x, y, GameController.entitySize, GameController.entitySize);
         GameController.setImage(head,"src/main/java/snake/snake_game/images/head.png");
         // Add to body and anchor-pane
         this.BODY.add(head);
@@ -24,7 +24,7 @@ public class Snake
     public void addTail(AnchorPane anchorPane)
     {
         // Create tail
-        Rectangle tail = new Rectangle(0,0,GameController.ENTITY_SIZE,GameController.ENTITY_SIZE);
+        Rectangle tail = new Rectangle(0,0,GameController.entitySize,GameController.entitySize);
         GameController.setImage(tail,"src/main/java/snake/snake_game/images/tail.png");
         // Add to body and anchor-pane
         this.BODY.add(tail);
@@ -39,22 +39,22 @@ public class Snake
         {
             case DOWN  ->
                     {
-                        getBODY().get(0).setLayoutY(getBODY().get(0).getLayoutY() + GameController.ENTITY_SIZE);
+                        getBODY().get(0).setLayoutY(getBODY().get(0).getLayoutY() + GameController.entitySize);
                         this.BODY.get(0).setRotate(180);
                     }
             case RIGHT ->
                     {
-                        getBODY().get(0).setLayoutX(getBODY().get(0).getLayoutX() + GameController.ENTITY_SIZE);
+                        getBODY().get(0).setLayoutX(getBODY().get(0).getLayoutX() + GameController.entitySize);
                         this.BODY.get(0).setRotate(90);
                     }
             case UP    ->
                     {
-                        getBODY().get(0).setLayoutY(getBODY().get(0).getLayoutY() - GameController.ENTITY_SIZE);
+                        getBODY().get(0).setLayoutY(getBODY().get(0).getLayoutY() - GameController.entitySize);
                         this.BODY.get(0).setRotate(0);
                     }
             case LEFT  ->
                     {
-                        getBODY().get(0).setLayoutX(getBODY().get(0).getLayoutX() - GameController.ENTITY_SIZE);
+                        getBODY().get(0).setLayoutX(getBODY().get(0).getLayoutX() - GameController.entitySize);
                         this.BODY.get(0).setRotate(270);
                     }
         }

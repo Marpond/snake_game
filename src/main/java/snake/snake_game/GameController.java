@@ -26,16 +26,16 @@ import java.util.ResourceBundle;
 
 public class GameController implements Initializable
 {
+    public static int entitySize = 50;
 
     public static String currentUsername;
-    public static final Double ENTITY_SIZE = 40.;
     public static int score;
-    public static boolean cursed;
+    public static boolean isCursed;
     public static boolean wantObstacles;
 
     private Direction direction;
     private final double SNAKE_SPEED = 0.15;
-    private final int MAX_OBSTACLES = 25;
+    private final double MAX_OBSTACLES = 2000/entitySize;
     private final double SPEED_MULTIPLIER = 1.2;
     private final int[] ROTATION = {0,90,180,270};
     private final Random RANDOM = new Random();
@@ -88,7 +88,7 @@ public class GameController implements Initializable
         // Add obstacles
         if (wantObstacles)
         {
-            for (int i = 0;i<RANDOM.nextInt(MAX_OBSTACLES);i++)
+            for (int i = 0;i<RANDOM.nextInt((int) MAX_OBSTACLES);i++)
             {
                 new Obstacle(0,0,obstaclePane,snake.getBODY(),food,OBSTACLES);
             }
@@ -107,7 +107,7 @@ public class GameController implements Initializable
 
     private void setGameTick()
     {
-        if (cursed)
+        if (isCursed)
         {
             Timeline cursedTimeline = new Timeline(new KeyFrame(Duration.seconds(1), c ->
                     obstaclePane.setRotate(ROTATION[RANDOM.nextInt(4)])));
@@ -143,14 +143,14 @@ public class GameController implements Initializable
                     // TODO: Increase head hit-box
                     case SIZE ->
                             {
-                                if (snake.getBODY().get(0).getHeight() != ENTITY_SIZE*2)
+                                if (snake.getBODY().get(0).getHeight() != entitySize *2)
                                 {
-                                    snake.getBODY().get(0).setHeight(ENTITY_SIZE*2);
-                                    snake.getBODY().get(0).setWidth(ENTITY_SIZE*2);
+                                    snake.getBODY().get(0).setHeight(entitySize *2);
+                                    snake.getBODY().get(0).setWidth(entitySize *2);
                                     new Timeline(new KeyFrame(Duration.seconds(2), e ->
                                     {
-                                        snake.getBODY().get(0).setHeight(ENTITY_SIZE);
-                                        snake.getBODY().get(0).setWidth(ENTITY_SIZE);
+                                        snake.getBODY().get(0).setHeight(entitySize);
+                                        snake.getBODY().get(0).setWidth(entitySize);
                                     })).play();
                                 }
                             }
@@ -201,12 +201,19 @@ public class GameController implements Initializable
     {
         try (PrintWriter pw = new PrintWriter(new FileOutputStream(Leaderboard.FILE,true)))
         {
-            Date d = new Date();
-            pw.println(String.join(",",
-                    new String[]{
-                            String.valueOf(d),
-                            currentUsername,
-                            scoreText.getText()}));
+            // Only "vanilla" runs are saved
+            if (!Food.wantSpeed &&
+                !Food.wantSize &&
+                !GameController.wantObstacles &&
+                !GameController.isCursed &&
+                GameController.entitySize == 50)
+            {
+                Date d = new Date();
+                pw.println(String.join(",",
+                        new String[]{String.valueOf(d),
+                                    currentUsername,
+                                    scoreText.getText()}));
+            }
         }
         catch (FileNotFoundException ex) {ex.printStackTrace();}
     }
@@ -270,8 +277,8 @@ public class GameController implements Initializable
 
     private boolean isHitWall()
     {
-        return snake.getBODY().get(0).getLayoutX() > fieldPane.getPrefWidth() - ENTITY_SIZE ||
-                snake.getBODY().get(0).getLayoutY() > fieldPane.getPrefHeight() - ENTITY_SIZE ||
+        return snake.getBODY().get(0).getLayoutX() > fieldPane.getPrefWidth() - entitySize ||
+                snake.getBODY().get(0).getLayoutY() > fieldPane.getPrefHeight() - entitySize ||
                 snake.getBODY().get(0).getLayoutX() < 0 ||
                 snake.getBODY().get(0).getLayoutY() < 0;
     }
