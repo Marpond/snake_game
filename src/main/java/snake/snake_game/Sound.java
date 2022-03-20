@@ -11,8 +11,7 @@ public class Sound
 
     public static void play(String mediaName)
     {
-        mediaPlayer = new MediaPlayer(new Media(new File(
-                "src/main/java/snake/snake_game/sounds/" + mediaName +".mp3").toURI().toString()));
+        mediaPlayer = new MediaPlayer(new Media(new File("src/main/java/snake/snake_game/sounds/" + mediaName +".mp3").toURI().toString()));
         mediaPlayer.play();
     }
 }

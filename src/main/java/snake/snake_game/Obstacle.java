@@ -27,12 +27,27 @@ public class Obstacle
                 (this.RECTANGLE.getLayoutX() == food.getRECTANGLE().getLayoutX() && // If it's inside the food
                 this.RECTANGLE.getLayoutY() == food.getRECTANGLE().getLayoutY())
                 ||
-                (this.RECTANGLE.getLayoutX()-snakeBody.get(0).getLayoutX() < 200)); // If it's within 4 blocks relative to the head
+                (this.RECTANGLE.getLayoutX()-snakeBody.get(0).getLayoutX() < 200) // If it's within 4 blocks relative to the head
+                ||
+                isStacked(this.RECTANGLE,obstacles)); // If it's inside an obstacle
     }
 
     private void move(AnchorPane anchorPane)
     {
         this.RECTANGLE.setLayoutX(RANDOM.nextInt((int) (anchorPane.getPrefWidth()/GameController.entitySize)) * GameController.entitySize);
         this.RECTANGLE.setLayoutY(RANDOM.nextInt((int) (anchorPane.getPrefHeight()/GameController.entitySize)) * GameController.entitySize);
+    }
+
+    private boolean isStacked(Rectangle obstacle,ArrayList<Rectangle> obstacles)
+    {
+        for (Rectangle rectangle:obstacles)
+        {
+            if (obstacle.getLayoutX()==rectangle.getLayoutX()&&
+                obstacle.getLayoutY()==rectangle.getLayoutY())
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
