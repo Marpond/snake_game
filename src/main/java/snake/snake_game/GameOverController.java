@@ -11,8 +11,6 @@ import java.util.ResourceBundle;
 public class GameOverController implements Initializable
 {
     @FXML
-    private AnchorPane anchorPane;
-    @FXML
     Text scoreText;
 
     @Override
