@@ -18,6 +18,7 @@ import javafx.util.Duration;
 
 import java.io.*;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 import java.util.ResourceBundle;
@@ -33,15 +34,22 @@ public class GameController implements Initializable
 
     private Direction direction;
     private final double SNAKE_SPEED = 0.15;
+    private final int MAX_OBSTACLES = 25;
     private final double SPEED_MULTIPLIER = 1.2;
     private final int[] ROTATION = {0,90,180,270};
     private final Random RANDOM = new Random();
+    private final ArrayList<Rectangle> OBSTACLES = new ArrayList<>();
+
     @FXML
     private AnchorPane fieldPane;
     @FXML
     private AnchorPane snakePane;
     @FXML
+    private AnchorPane obstaclePane;
+    @FXML
     private Text scoreText;
+    @FXML
+    private Text usernameText;
 
     private MediaPlayer soundtrack;
     private Snake snake;
@@ -61,6 +69,9 @@ public class GameController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        // Without the timeline usernameText is null
+        new Timeline(new KeyFrame(Duration.millis(1), setUsername -> usernameText.setText(usernameText.getText()+currentUsername))).play();
+
         soundtrack = new MediaPlayer(new Media(new File(
                 "src/main/java/snake/snake_game/sounds/soundtrack.mp3").toURI().toString()));
         soundtrack.play();
@@ -73,9 +84,19 @@ public class GameController implements Initializable
         snake = new Snake(0, 0, snakePane);
         food = new Food(0, 0, fieldPane);
 
-        food.move(fieldPane);
-        setFoodReset();
+        // Add obstacles
+        for (int i = 0;i<RANDOM.nextInt(MAX_OBSTACLES);i++)
+        {
+            new Obstacle(0,0,obstaclePane,snake.getBODY(),food,OBSTACLES);
+        }
 
+        do
+        {
+            food.move(fieldPane);
+        }
+        while (isFoodColliding());
+
+        setFoodReset();
         setGameTick();
     }
 
@@ -84,14 +105,16 @@ public class GameController implements Initializable
         if (cursed)
         {
             Timeline cursedTimeline = new Timeline(new KeyFrame(Duration.seconds(1), c ->
-                    snakePane.setRotate(ROTATION[RANDOM.nextInt(4)])));
+                    obstaclePane.setRotate(ROTATION[RANDOM.nextInt(4)])));
             cursedTimeline.setCycleCount(Animation.INDEFINITE);
             cursedTimeline.setRate(1);
             cursedTimeline.play();
         }
 
+
         gameTick = new Timeline(new KeyFrame(Duration.seconds(SNAKE_SPEED), gt ->
         {
+
             if (isFoodEaten())
             {
                 Sound.play("get");
@@ -132,7 +155,7 @@ public class GameController implements Initializable
                 {
                     food.move(fieldPane);
                 }
-                while (isFoodInSnake());
+                while (isFoodColliding());
                 // New food location every 10 secs
                 setFoodReset();
             }
@@ -189,12 +212,22 @@ public class GameController implements Initializable
                 food.getRECTANGLE().getLayoutY() == snake.getBODY().get(0).getLayoutY();
     }
 
-    private boolean isFoodInSnake()
+    private boolean isFoodColliding()
     {
-        for (Rectangle segment: snake.getBODY())
+        // Snake
+        for (Rectangle segment:snake.getBODY())
         {
             if (food.getRECTANGLE().getLayoutX() == segment.getLayoutX() &&
                     food.getRECTANGLE().getLayoutY() == segment.getLayoutY())
+            {
+                return true;
+            }
+        }
+        // Obstacle
+        for (Rectangle obstacle:OBSTACLES)
+        {
+            if (food.getRECTANGLE().getLayoutX() == obstacle.getLayoutX() &&
+            food.getRECTANGLE().getLayoutY() == obstacle.getLayoutY())
             {
                 return true;
             }
@@ -211,10 +244,23 @@ public class GameController implements Initializable
             {
                 food.move(fieldPane);
             }
-            while (isFoodInSnake());
+            while (isFoodColliding());
         }));
         foodReset.setCycleCount(Animation.INDEFINITE);
         foodReset.play();
+    }
+
+    private boolean isHitObstacle()
+    {
+        for (Rectangle obstacle:OBSTACLES)
+        {
+            if (obstacle.getLayoutX() == snake.getBODY().get(0).getLayoutX() &&
+            obstacle.getLayoutY() == snake.getBODY().get(0).getLayoutY())
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isHitWall()
@@ -229,7 +275,8 @@ public class GameController implements Initializable
     {
         for (Rectangle tail: snake.getBODY().subList(1, snake.getBODY().size()))
         {
-            if (tail.getLayoutX() == snake.getBODY().get(0).getLayoutX() && tail.getLayoutY() == snake.getBODY().get(0).getLayoutY())
+            if (tail.getLayoutX() == snake.getBODY().get(0).getLayoutX() &&
+                    tail.getLayoutY() == snake.getBODY().get(0).getLayoutY())
             {
                 return true;
             }
@@ -239,6 +286,6 @@ public class GameController implements Initializable
 
     private boolean isGameOver()
     {
-        return isHitWall() || isSelfCollision();
+        return isHitWall() || isSelfCollision() || isHitObstacle();
     }
 }
