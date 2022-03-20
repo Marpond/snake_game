@@ -31,6 +31,7 @@ public class GameController implements Initializable
     public static final Double ENTITY_SIZE = 40.;
     public static int score;
     public static boolean cursed;
+    public static boolean wantObstacles;
 
     private Direction direction;
     private final double SNAKE_SPEED = 0.15;
@@ -85,10 +86,14 @@ public class GameController implements Initializable
         food = new Food(0, 0, fieldPane);
 
         // Add obstacles
-        for (int i = 0;i<RANDOM.nextInt(MAX_OBSTACLES);i++)
+        if (wantObstacles)
         {
-            new Obstacle(0,0,obstaclePane,snake.getBODY(),food,OBSTACLES);
+            for (int i = 0;i<RANDOM.nextInt(MAX_OBSTACLES);i++)
+            {
+                new Obstacle(0,0,obstaclePane,snake.getBODY(),food,OBSTACLES);
+            }
         }
+
 
         do
         {

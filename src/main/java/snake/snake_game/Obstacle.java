@@ -12,11 +12,10 @@ public class Obstacle
     private final Rectangle RECTANGLE;
     private final Random RANDOM = new Random();
 
-
     public Obstacle(double x, double y, AnchorPane anchorPane, ArrayList<Rectangle> snakeBody, Food food, ArrayList<Rectangle> obstacles)
     {
         this.RECTANGLE = new Rectangle(x,y,GameController.ENTITY_SIZE,GameController.ENTITY_SIZE);
-        this.RECTANGLE.setFill(Color.BLACK);
+        GameController.setImage(this.RECTANGLE,"src/main/java/snake/snake_game/images/obstacle.png");
         obstacles.add(this.RECTANGLE);
         anchorPane.getChildren().add(this.RECTANGLE);
         do
@@ -32,7 +31,7 @@ public class Obstacle
                 (this.RECTANGLE.getLayoutX()-snakeBody.get(0).getLayoutX() < 200)); // If it's within 4 blocks relative to the head
     }
 
-    public void move(AnchorPane anchorPane)
+    private void move(AnchorPane anchorPane)
     {
         this.RECTANGLE.setLayoutX(RANDOM.nextInt((int) (anchorPane.getPrefWidth()/GameController.ENTITY_SIZE)) * GameController.ENTITY_SIZE);
         this.RECTANGLE.setLayoutY(RANDOM.nextInt((int) (anchorPane.getPrefHeight()/GameController.ENTITY_SIZE)) * GameController.ENTITY_SIZE);

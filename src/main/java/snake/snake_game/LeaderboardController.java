@@ -55,12 +55,13 @@ public class LeaderboardController implements Initializable
         LIST.sort(new sortByScoreDescend());
         table.setItems(LIST);
 
-        date.setResizable(false);
-        name.setResizable(false);
-        score.setResizable(false);
-        date.setSortable(false);
-        name.setSortable(false);
-        score.setSortable(false);
+        for (TableColumn tableColumn:table.getColumns())
+        {
+            tableColumn.setResizable(false);
+            tableColumn.setSortable(false);
+            tableColumn.setEditable(false);
+            tableColumn.setReorderable(false);
+        }
     }
 
     @FXML

@@ -31,3 +31,13 @@
 {
     -fx-background-image: url("bgs/gamebg.png");
 }
+
+.check-box .box
+{
+    -fx-background-color: black;
+}
+
+.check-box:selected .mark
+{
+    -fx-background-color: white;
+}
