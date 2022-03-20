@@ -24,7 +24,7 @@ class sortByScoreDescend implements Comparator<Leaderboard>
 
 public class LeaderboardController implements Initializable
 {
-    private final Scanner SC = new Scanner(Leaderboard.FILE);
+    private final Scanner SCANNER = new Scanner(Leaderboard.FILE);
 
     @FXML
     private TableView<Leaderboard> table;
@@ -43,9 +43,9 @@ public class LeaderboardController implements Initializable
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
         // Load leaderboard
-        while (SC.hasNext() && !SC.next().isEmpty())
+        while (SCANNER.hasNext() && !SCANNER.next().isEmpty())
         {
-            String[] data = SC.nextLine().split(",");
+            String[] data = SCANNER.nextLine().split(",");
             LIST.add(new Leaderboard(data[0],data[1],Integer.parseInt(data[2])));
         }
         date.setCellValueFactory(new PropertyValueFactory<>("date"));

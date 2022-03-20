@@ -1,7 +1,5 @@
 package snake.snake_game;
 
-import javafx.beans.value.ObservableBooleanValue;
-import javafx.collections.ObservableSet;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;

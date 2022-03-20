@@ -13,27 +13,28 @@ public class Food
 
     private final Rectangle RECTANGLE;
     private final Random RANDOM = new Random();
+    private final ArrayList<FoodType> FOOD_TYPES = new ArrayList<>();
+
     private FoodType foodType;
-    private final ArrayList<FoodType> foodTypes = new ArrayList<>();
 
     public Food(double x, double y, AnchorPane anchorPane)
     {
         this.RECTANGLE = new Rectangle(x,y,GameController.ENTITY_SIZE,GameController.ENTITY_SIZE);
         anchorPane.getChildren().add(this.RECTANGLE);
 
-        this.foodTypes.add(FoodType.NORMAL);
+        this.FOOD_TYPES.add(FoodType.NORMAL);
         if (wantSpeed && wantSize)
         {
-            this.foodTypes.add(FoodType.SPEED);
-            this.foodTypes.add(FoodType.SIZE);
+            this.FOOD_TYPES.add(FoodType.SPEED);
+            this.FOOD_TYPES.add(FoodType.SIZE);
         }
         else if (wantSpeed)
         {
-            this.foodTypes.add(FoodType.SPEED);
+            this.FOOD_TYPES.add(FoodType.SPEED);
         }
         else if (wantSize)
         {
-            this.foodTypes.add(FoodType.SIZE);
+            this.FOOD_TYPES.add(FoodType.SIZE);
         }
     }
 
@@ -55,7 +56,7 @@ public class Food
         setGraphics();
     }
 
-    private FoodType randomType() {return foodTypes.get(RANDOM.nextInt(foodTypes.size()));}
+    private FoodType randomType() {return FOOD_TYPES.get(RANDOM.nextInt(FOOD_TYPES.size()));}
     
     private void setGraphics()
     {
