@@ -25,11 +25,13 @@ public class GameOverController implements Initializable
     private void switchToMenu()
     {
         SceneController.switchTo("menu");
+        Sound.play("select");
     }
 
     @FXML
     private void switchToGame()
     {
         SceneController.switchTo("game");
+        Sound.play("start");
     }
 }

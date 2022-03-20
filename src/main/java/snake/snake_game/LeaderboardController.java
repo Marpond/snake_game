@@ -67,5 +67,6 @@ public class LeaderboardController implements Initializable
     private void switchToMenu()
     {
         SceneController.switchTo("menu");
+        Sound.play("select");
     }
 }

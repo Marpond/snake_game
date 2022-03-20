@@ -10,6 +10,8 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -42,6 +44,7 @@ public class GameController implements Initializable
     @FXML
     private Text scoreText;
 
+    private MediaPlayer soundtrack;
     private Snake snake;
     private Food food;
     private Timeline gameTick;
@@ -59,6 +62,11 @@ public class GameController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        soundtrack = new MediaPlayer(new Media(new File(
+                "src/main/java/snake/snake_game/sounds/soundtrack.mp3").toURI().toString()));
+        soundtrack.play();
+        soundtrack.setCycleCount(MediaPlayer.INDEFINITE);
+
         score = 0;
 
         direction = Direction.RIGHT;
@@ -87,6 +95,7 @@ public class GameController implements Initializable
         {
             if (isFoodEaten())
             {
+                Sound.play("get");
                 // Update score
                 score++;
                 scoreText.setText(String.valueOf(score));
@@ -134,13 +143,9 @@ public class GameController implements Initializable
 
             if (isGameOver())
             {
+                Sound.play("gameover");
+                soundtrack.stop();
                 gameTick.stop();
-                // Fade snake
-                for (int i = snake.getBODY().size()-1; i>-1; i--)
-                {
-                    fadeSnake(i);
-                }
-
                 updateLeaderboard();
                 // Switch to game-over scene after 2 seconds
                 new Timeline(new KeyFrame(Duration.seconds(2), e -> SceneController.switchTo("gameover"))).play();
@@ -150,14 +155,6 @@ public class GameController implements Initializable
         gameTick.setCycleCount(Animation.INDEFINITE);
         gameTick.setRate(1);
         gameTick.play();
-    }
-
-    private void fadeSnake(int index)
-    {
-        Timeline fade = new Timeline(new KeyFrame(Duration.seconds(1.5),
-                new KeyValue(snake.getBODY().get(index).opacityProperty(), 0.0)));
-        fade.setRate(1);
-        fade.play();
     }
 
     @FXML
