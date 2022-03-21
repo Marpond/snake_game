@@ -36,7 +36,7 @@ public class GameController implements Initializable
     private Direction direction;
     private final double SNAKE_SPEED = 0.15;
     private final double MAX_OBSTACLES = 2000/entitySize;
-    private final double SPEED_MULTIPLIER = 1.2;
+    private final double SPEED_MULTIPLIER = 1.3;
     private final int[] ROTATION = {0,90,180,270};
     private final Random RANDOM = new Random();
     private final ArrayList<Rectangle> OBSTACLES = new ArrayList<>();

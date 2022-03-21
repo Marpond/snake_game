@@ -19,9 +19,10 @@ public class Food
 
     public Food(double x, double y, AnchorPane anchorPane)
     {
+        // Create new rectangle
         this.RECTANGLE = new Rectangle(x,y,GameController.entitySize,GameController.entitySize);
         anchorPane.getChildren().add(this.RECTANGLE);
-
+        // Set food type
         this.FOOD_TYPES.add(FoodType.NORMAL);
         if (wantSpeed && wantSize)
         {
@@ -50,9 +51,12 @@ public class Food
 
     public void move(AnchorPane anchorPane)
     {
+        // Move the food
         this.RECTANGLE.setLayoutX(RANDOM.nextInt((int) (anchorPane.getPrefWidth()/GameController.entitySize)) * GameController.entitySize);
         this.RECTANGLE.setLayoutY(RANDOM.nextInt((int) (anchorPane.getPrefHeight()/GameController.entitySize)) * GameController.entitySize);
+
         this.foodType = randomType();
+
         setGraphics();
     }
 
@@ -62,7 +66,6 @@ public class Food
     {
         switch (this.foodType)
         {
-            // TODO: Different graphics for each food
             case NORMAL -> GameController.setImage(this.RECTANGLE,"src/main/java/snake/snake_game/images/normalfood.png");
             case SPEED -> GameController.setImage(this.RECTANGLE,"src/main/java/snake/snake_game/images/speedfood.png");
             case SIZE -> GameController.setImage(this.RECTANGLE,"src/main/java/snake/snake_game/images/sizefood.png");

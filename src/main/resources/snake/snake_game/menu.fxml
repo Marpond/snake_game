@@ -17,7 +17,7 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
-    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="font" text="Snake game" textAlignment="CENTER" wrappingWidth="600.4640007019043" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 45;" styleClass="font" text="Snake game" textAlignment="CENTER" wrappingWidth="600.4640007019043" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
     <Button contentDisplay="TEXT_ONLY" mnemonicParsing="false" onAction="#switchToNewGame" text="New game" GridPane.rowIndex="1">
       <styleClass>
          <String fx:value="font" />
