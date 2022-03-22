@@ -5,6 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -13,6 +14,8 @@ import java.util.ResourceBundle;
 
 public class NewGameController implements Initializable
 {
+    @FXML
+    private AnchorPane ngAnchorPane;
     @FXML
     private CheckBox speedCheck;
     @FXML
@@ -32,7 +35,6 @@ public class NewGameController implements Initializable
     @FXML
     private Button startBtn;
 
-    private final int ANCHOR_PANE_SIZE = 600;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
@@ -43,14 +45,14 @@ public class NewGameController implements Initializable
         GameController.isCursed = false;
         GameController.wantObstacles = false;
         startBtn.setDisable(true);
-        setListeners();
+        setListeners(ngAnchorPane);
     }
 
     @FXML
     private void switchToGame()
     {
         SceneController.switchTo("game");
-        Sound.play("start");
+        SoundController.play("start");
         GameController.currentUsername = usernameTextField.getText();
     }
 
@@ -58,15 +60,19 @@ public class NewGameController implements Initializable
     private void switchToMenu()
     {
         SceneController.switchTo("menu");
-        Sound.play("select");
+        SoundController.play("select");
     }
 
-    private void setListeners()
+    /**
+     * Sets multiple listeners inside the scene
+     * @param anchorPane the listened items are on
+     */
+    private void setListeners(AnchorPane anchorPane)
     {
         // Username text-field
         usernameTextField.textProperty().addListener((observable, oldValue, newValue) ->
         {
-            Sound.play("type");
+            SoundController.play("type");
             // Disable or enable the button whether everything is correct
             startBtn.setDisable(newValue.isEmpty() ||
                                 usernameTextField.getText().length()>15 ||
@@ -77,48 +83,46 @@ public class NewGameController implements Initializable
                 usernameTextField.getText().length()>15 ||
                 usernameTextField.getText().contains(","))
             {
-                validUsernameText.setText("Invalid username");
-                validUsernameText.setFill(Color.RED);
+                setTextFill(validUsernameText,"Invalid username",Color.RED);
             }
             else
             {
-                validUsernameText.setText("OK");
-                validUsernameText.setFill(Color.LIMEGREEN);
+                setTextFill(validUsernameText,"OK",Color.LIMEGREEN);
             }
         });
         // Entity size text-field
         entitySizeTextField.textProperty().addListener((observable, oldValue, newValue) ->
         {
-            Sound.play("type");
+            SoundController.play("type");
             try
             {
+                // If it's empty
                 if (newValue.isEmpty())
                 {
+                    // Reset entitySize to default value
                     GameController.entitySize = 50;
 
-                    validEntitySizeText.setText("OK");
-                    validEntitySizeText.setFill(Color.LIMEGREEN);
+                    setTextFill(validEntitySizeText,"OK",Color.LIMEGREEN);
                     startBtn.setDisable(!validUsernameText.getText().equals("OK"));
                 }
-                else if (ANCHOR_PANE_SIZE %Integer.parseInt(newValue)==0 && Integer.parseInt(newValue) <= 200)
+                // If it can divide the anchor-pane-size and is less than 200
+                else if (anchorPane.getPrefWidth()%Integer.parseInt(newValue)==0 && Integer.parseInt(newValue) <= 200)
                 {
                     GameController.entitySize = Integer.parseInt(newValue);
 
-                    validEntitySizeText.setText("OK");
-                    validEntitySizeText.setFill(Color.LIMEGREEN);
+                    setTextFill(validEntitySizeText,"OK",Color.LIMEGREEN);
                     startBtn.setDisable(!validUsernameText.getText().equals("OK"));
                 }
                 else
                 {
-                    validEntitySizeText.setText("Invalid entity size");
-                    validEntitySizeText.setFill(Color.RED);
+                    setTextFill(validEntitySizeText,"Invalid entity size",Color.RED);
                     startBtn.setDisable(true);
                 }
             }
+            // If it's not an integer
             catch (Exception e)
             {
-                validEntitySizeText.setText("Invalid entity size");
-                validEntitySizeText.setFill(Color.RED);
+                setTextFill(validEntitySizeText,"Invalid entity size",Color.RED);
                 startBtn.setDisable(true);
             }
         });
@@ -126,22 +130,34 @@ public class NewGameController implements Initializable
         speedCheck.selectedProperty().addListener((observable, oldValue, newValue) ->
         {
             Food.wantSpeed = newValue;
-            Sound.play("select");
+            SoundController.play("select");
         });
         sizeCheck.selectedProperty().addListener((observable, oldValue, newValue) ->
         {
             Food.wantSize = newValue;
-            Sound.play("select");
+            SoundController.play("select");
         });
         obstacleCheck.selectedProperty().addListener((observable, oldValue, newValue) ->
         {
             GameController.wantObstacles = newValue;
-            Sound.play("select");
+            SoundController.play("select");
         });
         cursedCheck.selectedProperty().addListener((observable, oldValue, newValue) ->
         {
             GameController.isCursed = newValue;
-            Sound.play("select");
+            SoundController.play("select");
         });
+    }
+
+    /**
+     * Changes the message and color of a Text
+     * @param text to change
+     * @param message to prompt
+     * @param color to change to
+     */
+    private void setTextFill(Text text, String message, Color color)
+    {
+        text.setText(message);
+        text.setFill(color);
     }
 }

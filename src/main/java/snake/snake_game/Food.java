@@ -8,6 +8,7 @@ import java.util.Random;
 
 public class Food
 {
+    // Boolean values for different food types
     public static boolean wantSpeed;
     public static boolean wantSize;
 
@@ -17,10 +18,14 @@ public class Food
 
     private FoodType foodType;
 
-    public Food(double x, double y, AnchorPane anchorPane)
+    /**
+     * Constructor
+     * @param anchorPane to add it to
+     */
+    public Food(AnchorPane anchorPane)
     {
         // Create new rectangle
-        this.RECTANGLE = new Rectangle(x,y,GameController.entitySize,GameController.entitySize);
+        this.RECTANGLE = new Rectangle(0,0,GameController.entitySize,GameController.entitySize);
         anchorPane.getChildren().add(this.RECTANGLE);
         // Set food type
         this.FOOD_TYPES.add(FoodType.NORMAL);
@@ -49,6 +54,12 @@ public class Food
         return this.foodType;
     }
 
+    /**
+     * Moves the rectangle to a random position
+     * Sets food type
+     * Sets graphics
+     * @param anchorPane to move the food on
+     */
     public void move(AnchorPane anchorPane)
     {
         // Move the food
@@ -60,8 +71,15 @@ public class Food
         setGraphics();
     }
 
+    /**
+     * Method used to set current food's type
+     * @return random FoodType value from FOOD_TYPES arraylist
+     */
     private FoodType randomType() {return FOOD_TYPES.get(RANDOM.nextInt(FOOD_TYPES.size()));}
-    
+
+    /**
+     * Sets the graphics of the food based on it's type
+     */
     private void setGraphics()
     {
         switch (this.foodType)

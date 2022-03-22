@@ -8,13 +8,13 @@ public class MenuController
     private void switchToNewGame()
     {
         SceneController.switchTo("newgame");
-        Sound.play("select");
+        SoundController.play("select");
     }
 
     @FXML
     private void switchToLeaderboard()
     {
         SceneController.switchTo("leaderboard");
-        Sound.play("select");
+        SoundController.play("select");
     }
 }

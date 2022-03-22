@@ -14,6 +14,9 @@ import java.util.Comparator;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
+/**
+ * Class used to sort the leaderboard values by descending scores
+ */
 class sortByScoreDescend implements Comparator<Leaderboard>
 {
     public int compare(Leaderboard a, Leaderboard b)
@@ -48,13 +51,16 @@ public class LeaderboardController implements Initializable
             String[] data = SCANNER.nextLine().split(",");
             LIST.add(new Leaderboard(data[0],data[1],Integer.parseInt(data[2])));
         }
+        // Bind stuff
         date.setCellValueFactory(new PropertyValueFactory<>("date"));
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         score.setCellValueFactory(new PropertyValueFactory<>("score"));
-
+        // Sort list with method
         LIST.sort(new sortByScoreDescend());
+
         table.setItems(LIST);
 
+        // Make the leaderboard untouchable
         for (TableColumn tableColumn:table.getColumns())
         {
             tableColumn.setResizable(false);
@@ -68,6 +74,6 @@ public class LeaderboardController implements Initializable
     private void switchToMenu()
     {
         SceneController.switchTo("menu");
-        Sound.play("select");
+        SoundController.play("select");
     }
 }

@@ -9,7 +9,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="600.0" styleClass="gridbg" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="snake.snake_game.NewGameController">
+<AnchorPane fx:id="ngAnchorPane" prefHeight="600.0" prefWidth="600.0" styleClass="gridbg" stylesheets="@style.css"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="snake.snake_game.NewGameController">
    <TextField fx:id="usernameTextField" alignment="CENTER" layoutX="184.0" layoutY="111.0" prefHeight="29.0" prefWidth="236.0" promptText="enter username" style="-fx-font-size: 14;">
       <styleClass>
          <String fx:value="blackbg" />

@@ -2,7 +2,6 @@ package snake.snake_game;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -23,13 +22,13 @@ public class GameOverController implements Initializable
     private void switchToMenu()
     {
         SceneController.switchTo("menu");
-        Sound.play("select");
+        SoundController.play("select");
     }
 
     @FXML
     private void switchToGame()
     {
         SceneController.switchTo("game");
-        Sound.play("start");
+        SoundController.play("start");
     }
 }

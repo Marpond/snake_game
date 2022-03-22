@@ -9,12 +9,19 @@ import java.util.Objects;
 
 public class SceneController
 {
-    public static void switchTo(String fxml)
+    /**
+     * Public method used to change scenes
+     * @param fxmlName name of scene to change to
+     */
+    public static void switchTo(String fxmlName)
     {
         try
         {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(SceneController.class.getResource(fxml+".fxml")));
+            // Load fxml
+            Parent root = FXMLLoader.load(Objects.requireNonNull(SceneController.class.getResource(fxmlName+".fxml")));
+            // Change to new scene
             Main.stage.setScene(new Scene(root));
+            // Request focus so stuff works
             root.requestFocus();
         }
         catch (IOException e){e.printStackTrace();}

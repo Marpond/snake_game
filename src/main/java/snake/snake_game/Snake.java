@@ -7,12 +7,17 @@ import java.util.ArrayList;
 
 public class Snake
 {
+    // Arraylist every body segment
     private final ArrayList<Rectangle> BODY = new ArrayList<>();
 
-    public Snake(double x, double y, AnchorPane anchorPane)
+    /**
+     * Constructor
+     * @param anchorPane to add it to
+     */
+    public Snake(AnchorPane anchorPane)
     {
         // Create head
-        Rectangle head = new Rectangle(x, y, GameController.entitySize, GameController.entitySize);
+        Rectangle head = new Rectangle(0, 0, GameController.entitySize, GameController.entitySize);
         GameController.setImage(head,"src/main/java/snake/snake_game/images/head.png");
         // Add to body and anchor-pane
         this.BODY.add(head);
@@ -21,6 +26,11 @@ public class Snake
         addTail(anchorPane);
         addTail(anchorPane);
     }
+
+    /**
+     * Creates a new rectangle as a new tail
+     * @param anchorPane to add it to
+     */
     public void addTail(AnchorPane anchorPane)
     {
         // Create tail
@@ -33,6 +43,10 @@ public class Snake
 
     public ArrayList<Rectangle> getBODY() {return this.BODY;}
 
+    /**
+     * Moves the head coordinates and changes the rotation based on the current direction inside GameController
+     * @param direction of the head
+     */
     public void moveHead(Direction direction)
     {
         switch (direction)
@@ -60,6 +74,9 @@ public class Snake
         }
     }
 
+    /**
+     * Makes every other body segment except the head move to the coordinates of the previous segment
+     */
     public void followHead()
     {
         for (int i = this.BODY.size()-1; i > 0; i--)
@@ -71,6 +88,9 @@ public class Snake
         changeEndTail();
     }
 
+    /**
+     * Changes the graphical values of the last segment and the one before that
+     */
     private void changeEndTail()
     {
         GameController.setImage(this.BODY.get(this.BODY.size()-1), "src/main/java/snake/snake_game/images/end.png");
