@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Snake
 {
-    // Arraylist every body segment
+    // Arraylist of every body segment
     private final ArrayList<Rectangle> BODY = new ArrayList<>();
 
     /**
