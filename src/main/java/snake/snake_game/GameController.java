@@ -79,7 +79,8 @@ public class GameController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Set the username text
         // Without the timeline usernameText is null
-        new Timeline(new KeyFrame(Duration.millis(1), setUsername -> usernameText.setText(usernameText.getText() + currentUsername))).play();
+        new Timeline(new KeyFrame(Duration.millis(1), setUsername ->
+                usernameText.setText(usernameText.getText() + currentUsername))).play();
         // Start playing the game music
         soundtrack = new MediaPlayer(new Media(new File(
                 "src/main/java/snake/snake_game/sounds/soundtrack.mp3").toURI().toString()));
