@@ -24,8 +24,7 @@ import java.util.Random;
 import java.util.ResourceBundle;
 
 
-public class GameController implements Initializable
-{
+public class GameController implements Initializable {
     // Public variables used across many classes
     public static int entitySize = 50;
     public static String currentUsername;
@@ -37,9 +36,9 @@ public class GameController implements Initializable
 
     private Direction direction;
     private final double SNAKE_SPEED = 0.15;
-    private final double MAX_OBSTACLES = 2000/entitySize;
+    private final double MAX_OBSTACLES = 2000 / entitySize;
     private final double SPEED_MULTIPLIER = 1.3;
-    private final int[] ROTATION = {0,90,180,270};
+    private final int[] ROTATION = {0, 90, 180, 270};
     private final Random RANDOM = new Random();
     private final ArrayList<Rectangle> OBSTACLES = new ArrayList<>();
     // Without this the user would be able to change direction multiple times between timeline cycles
@@ -68,20 +67,19 @@ public class GameController implements Initializable
 
     /**
      * Sets the fill of a rectangle to an image pattern
+     *
      * @param rectangle to set the fill of
      * @param directory of the image
      */
-    public static void setImage(Rectangle rectangle, String directory)
-    {
+    public static void setImage(Rectangle rectangle, String directory) {
         rectangle.setFill(new ImagePattern(new Image(new File(directory).toURI().toString())));
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle)
-    {
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         // Set the username text
         // Without the timeline usernameText is null
-        new Timeline(new KeyFrame(Duration.millis(1), setUsername -> usernameText.setText(usernameText.getText()+currentUsername))).play();
+        new Timeline(new KeyFrame(Duration.millis(1), setUsername -> usernameText.setText(usernameText.getText() + currentUsername))).play();
         // Start playing the game music
         soundtrack = new MediaPlayer(new Media(new File(
                 "src/main/java/snake/snake_game/sounds/soundtrack.mp3").toURI().toString()));
@@ -96,16 +94,13 @@ public class GameController implements Initializable
         food = new Food(fieldPane);
 
         // Add obstacles
-        if (wantObstacles)
-        {
-            for (int i = 0;i<RANDOM.nextInt((int) MAX_OBSTACLES);i++)
-            {
-                new Obstacle(0,0,obstaclePane,snake.getBODY(),food,OBSTACLES);
+        if (wantObstacles) {
+            for (int i = 0; i < RANDOM.nextInt((int) MAX_OBSTACLES); i++) {
+                new Obstacle(0, 0, obstaclePane, snake.getBODY(), food, OBSTACLES);
             }
         }
         // Move the food once and repeat till it's not colliding with other rectangles
-        do
-        {
+        do {
             food.move(fieldPane);
         }
         while (isFoodColliding());
@@ -116,12 +111,11 @@ public class GameController implements Initializable
 
     /**
      * Sets a timeline that is responsible for the game's ticks
+     *
      * @param duration cycle rate of the timeline
      */
-    private void setGameTick(double duration)
-    {
-        if (isCursed)
-        {
+    private void setGameTick(double duration) {
+        if (isCursed) {
             // Set a new timeline that changes the rotation of the play-field every second
             Timeline cursedTimeline = new Timeline(new KeyFrame(Duration.seconds(1), c ->
                     obstaclePane.setRotate(ROTATION[RANDOM.nextInt(4)])));
@@ -132,8 +126,7 @@ public class GameController implements Initializable
         // Main timeline
         gameTick = new Timeline(new KeyFrame(Duration.seconds(duration), gt ->
         {
-            if (isFoodEaten())
-            {
+            if (isFoodEaten()) {
                 // Play sound
                 SoundController.play("get");
                 // Update score
@@ -142,29 +135,28 @@ public class GameController implements Initializable
                 // New tail
                 snake.addTail(snakePane);
                 // Food effects
-                switch (food.getFoodType())
-                {
+                switch (food.getFoodType()) {
                     // Speed food
-                    case SPEED ->
-                            {
-                                // Try to stop the timeline in case it already exists
-                                try {speedReset.stop();} catch (Exception ignored){}
-                                // Speed up the main timeline
-                                gameTick.setRate(gameTick.getRate() * SPEED_MULTIPLIER);
-                                // Normal speed after 3 seconds
-                                speedReset = new Timeline(new KeyFrame(Duration.seconds(3), sr -> gameTick.setRate(1)));
-                                speedReset.play();
-                            }
+                    case SPEED -> {
+                        // Try to stop the timeline in case it already exists
+                        try {
+                            speedReset.stop();
+                        } catch (Exception ignored) {
+                        }
+                        // Speed up the main timeline
+                        gameTick.setRate(gameTick.getRate() * SPEED_MULTIPLIER);
+                        // Normal speed after 3 seconds
+                        speedReset = new Timeline(new KeyFrame(Duration.seconds(3), sr -> gameTick.setRate(1)));
+                        speedReset.play();
+                    }
                     // TODO: Increase head hit-box
                     // Size food
-                    case SIZE ->
-                            {
-                                System.out.println("size");
-                            }
+                    case SIZE -> {
+                        System.out.println("size");
+                    }
                 }
                 // Move food to new location
-                do
-                {
+                do {
                     food.move(fieldPane);
                 }
                 while (isFoodColliding());
@@ -175,8 +167,7 @@ public class GameController implements Initializable
             snake.followHead();
             snake.moveHead(direction);
 
-            if (isGameOver())
-            {
+            if (isGameOver()) {
                 // Play the game-over sound
                 SoundController.play("gameover");
                 // Stop the game
@@ -197,17 +188,21 @@ public class GameController implements Initializable
 
     /**
      * Changes direction of the snake
+     *
      * @param event keyboard input
      */
     @FXML
-    private void changeDirection(KeyEvent event)
-    {
-        if(canChangeDirection)
-        {
-            if      (event.getCode().equals(KeyCode.W) && direction != Direction.DOWN)  {direction = Direction.UP;}
-            else if (event.getCode().equals(KeyCode.A) && direction != Direction.RIGHT) {direction = Direction.LEFT;}
-            else if (event.getCode().equals(KeyCode.S) && direction != Direction.UP)    {direction = Direction.DOWN;}
-            else if (event.getCode().equals(KeyCode.D) && direction != Direction.LEFT)  {direction = Direction.RIGHT;}
+    private void changeDirection(KeyEvent event) {
+        if (canChangeDirection) {
+            if (event.getCode().equals(KeyCode.W) && direction != Direction.DOWN) {
+                direction = Direction.UP;
+            } else if (event.getCode().equals(KeyCode.A) && direction != Direction.RIGHT) {
+                direction = Direction.LEFT;
+            } else if (event.getCode().equals(KeyCode.S) && direction != Direction.UP) {
+                direction = Direction.DOWN;
+            } else if (event.getCode().equals(KeyCode.D) && direction != Direction.LEFT) {
+                direction = Direction.RIGHT;
+            }
             canChangeDirection = false;
         }
     }
@@ -215,58 +210,52 @@ public class GameController implements Initializable
     /**
      * Updates leaderboard.csv
      */
-    private void updateLeaderboard()
-    {
-        try (PrintWriter pw = new PrintWriter(new FileOutputStream(Leaderboard.FILE,true)))
-        {
+    private void updateLeaderboard() {
+        try (PrintWriter pw = new PrintWriter(new FileOutputStream(Leaderboard.FILE, true))) {
             // Only "vanilla" runs are saved
             if (!Food.wantSpeed &&
-                !Food.wantSize &&
-                !GameController.wantObstacles &&
-                !GameController.isCursed &&
-                GameController.entitySize == 50)
-            {
+                    !Food.wantSize &&
+                    !GameController.wantObstacles &&
+                    !GameController.isCursed &&
+                    GameController.entitySize == 50) {
                 Date d = new Date();
                 pw.println(String.join(",",
                         new String[]{String.valueOf(d),
-                                    currentUsername,
-                                    scoreText.getText()}));
+                                currentUsername,
+                                scoreText.getText()}));
             }
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
         }
-        catch (FileNotFoundException ex) {ex.printStackTrace();}
     }
 
     /**
      * Checks if the snake head coordinates match the food's
+     *
      * @return boolean value
      */
-    private boolean isFoodEaten()
-    {
+    private boolean isFoodEaten() {
         return food.getRECTANGLE().getLayoutX() == snake.getBODY().get(0).getLayoutX() &&
                 food.getRECTANGLE().getLayoutY() == snake.getBODY().get(0).getLayoutY();
     }
 
     /**
      * Checks for multiple occasions where the food could be colliding with other rectangles
+     *
      * @return boolean value
      */
-    private boolean isFoodColliding()
-    {
+    private boolean isFoodColliding() {
         // Snake
-        for (Rectangle segment:snake.getBODY())
-        {
+        for (Rectangle segment : snake.getBODY()) {
             if (food.getRECTANGLE().getLayoutX() == segment.getLayoutX() &&
-                    food.getRECTANGLE().getLayoutY() == segment.getLayoutY())
-            {
+                    food.getRECTANGLE().getLayoutY() == segment.getLayoutY()) {
                 return true;
             }
         }
         // Obstacle
-        for (Rectangle obstacle:OBSTACLES)
-        {
+        for (Rectangle obstacle : OBSTACLES) {
             if (food.getRECTANGLE().getLayoutX() == obstacle.getLayoutX() &&
-            food.getRECTANGLE().getLayoutY() == obstacle.getLayoutY())
-            {
+                    food.getRECTANGLE().getLayoutY() == obstacle.getLayoutY()) {
                 return true;
             }
         }
@@ -276,13 +265,14 @@ public class GameController implements Initializable
     /**
      * Sets a timeline that resets the food's location every x seconds
      */
-    private void setFoodReset()
-    {
-        try {foodReset.stop();} catch (Exception ignored){}
+    private void setFoodReset() {
+        try {
+            foodReset.stop();
+        } catch (Exception ignored) {
+        }
         foodReset = new Timeline(new KeyFrame(Duration.seconds(10), fr ->
         {
-            do
-            {
+            do {
                 food.move(fieldPane);
             }
             while (isFoodColliding());
@@ -293,15 +283,13 @@ public class GameController implements Initializable
 
     /**
      * Checks if the snake head's coordinates match an obstacle's
+     *
      * @return boolean value
      */
-    private boolean isHitObstacle()
-    {
-        for (Rectangle obstacle:OBSTACLES)
-        {
+    private boolean isHitObstacle() {
+        for (Rectangle obstacle : OBSTACLES) {
             if (obstacle.getLayoutX() == snake.getBODY().get(0).getLayoutX() &&
-            obstacle.getLayoutY() == snake.getBODY().get(0).getLayoutY())
-            {
+                    obstacle.getLayoutY() == snake.getBODY().get(0).getLayoutY()) {
                 return true;
             }
         }
@@ -310,10 +298,10 @@ public class GameController implements Initializable
 
     /**
      * Checks if the snake head is outside the boundary
+     *
      * @return boolean value
      */
-    private boolean isHitWall()
-    {
+    private boolean isHitWall() {
         return snake.getBODY().get(0).getLayoutX() > fieldPane.getPrefWidth() - entitySize ||
                 snake.getBODY().get(0).getLayoutY() > fieldPane.getPrefHeight() - entitySize ||
                 snake.getBODY().get(0).getLayoutX() < 0 ||
@@ -322,15 +310,13 @@ public class GameController implements Initializable
 
     /**
      * Checks if the snake head's coordinates match with any of the other body's parts
+     *
      * @return boolean value
      */
-    private boolean isSelfCollision()
-    {
-        for (Rectangle tail: snake.getBODY().subList(1, snake.getBODY().size()))
-        {
+    private boolean isSelfCollision() {
+        for (Rectangle tail : snake.getBODY().subList(1, snake.getBODY().size())) {
             if (tail.getLayoutX() == snake.getBODY().get(0).getLayoutX() &&
-                    tail.getLayoutY() == snake.getBODY().get(0).getLayoutY())
-            {
+                    tail.getLayoutY() == snake.getBODY().get(0).getLayoutY()) {
                 return true;
             }
         }
@@ -339,10 +325,10 @@ public class GameController implements Initializable
 
     /**
      * Checks if the returned boolean value of any game-ending methods are true
+     *
      * @return boolean value
      */
-    private boolean isGameOver()
-    {
+    private boolean isGameOver() {
         return isHitWall() || isSelfCollision() || isHitObstacle();
     }
 }

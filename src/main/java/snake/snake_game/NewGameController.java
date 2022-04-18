@@ -12,8 +12,7 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class NewGameController implements Initializable
-{
+public class NewGameController implements Initializable {
     @FXML
     private AnchorPane ngAnchorPane;
     @FXML
@@ -37,8 +36,7 @@ public class NewGameController implements Initializable
 
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle)
-    {
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         GameController.entitySize = 50;
         Food.wantSpeed = false;
         Food.wantSize = false;
@@ -49,80 +47,69 @@ public class NewGameController implements Initializable
     }
 
     @FXML
-    private void switchToGame()
-    {
+    private void switchToGame() {
         SceneController.switchTo("game");
         SoundController.play("start");
         GameController.currentUsername = usernameTextField.getText();
     }
 
     @FXML
-    private void switchToMenu()
-    {
+    private void switchToMenu() {
         SceneController.switchTo("menu");
         SoundController.play("select");
     }
 
     /**
      * Sets multiple listeners inside the scene
+     *
      * @param anchorPane the listened items are on
      */
-    private void setListeners(AnchorPane anchorPane)
-    {
+    private void setListeners(AnchorPane anchorPane) {
         // Username text-field
         usernameTextField.textProperty().addListener((observable, oldValue, newValue) ->
         {
             SoundController.play("type");
             // Disable or enable the button whether everything is correct
             startBtn.setDisable(newValue.isEmpty() ||
-                                usernameTextField.getText().length()>15 ||
-                                usernameTextField.getText().contains(",") ||
-                                validEntitySizeText.getFill() == Color.RED);
+                    usernameTextField.getText().length() > 15 ||
+                    usernameTextField.getText().contains(",") ||
+                    validEntitySizeText.getFill() == Color.RED);
             // If the input is invalid
             if (newValue.isEmpty() ||
-                usernameTextField.getText().length()>15 ||
-                usernameTextField.getText().contains(","))
-            {
-                setTextFill(validUsernameText,"Invalid username",Color.RED);
-            }
-            else
-            {
-                setTextFill(validUsernameText,"OK",Color.LIMEGREEN);
+                    usernameTextField.getText().length() > 15 ||
+                    usernameTextField.getText().contains(",")) {
+                setTextFill(validUsernameText, "Invalid username", Color.RED);
+            } else {
+                setTextFill(validUsernameText, "OK", Color.LIMEGREEN);
             }
         });
         // Entity size text-field
         entitySizeTextField.textProperty().addListener((observable, oldValue, newValue) ->
         {
             SoundController.play("type");
-            try
-            {
+            try {
                 // If it's empty
-                if (newValue.isEmpty())
-                {
+                if (newValue.isEmpty()) {
                     // Reset entitySize to default value
                     GameController.entitySize = 50;
 
-                    setTextFill(validEntitySizeText,"OK",Color.LIMEGREEN);
+                    setTextFill(validEntitySizeText, "OK", Color.LIMEGREEN);
                     startBtn.setDisable(!validUsernameText.getText().equals("OK"));
                 }
                 // If it can divide the anchor-pane-size and is less than 200
-                else if (anchorPane.getPrefWidth()%Integer.parseInt(newValue)==0 && Integer.parseInt(newValue) <= 200)
-                {
+                else if (anchorPane.getPrefWidth() % Integer.parseInt(newValue) == 0 && Integer.parseInt(newValue) <= 200) {
                     GameController.entitySize = Integer.parseInt(newValue);
 
-                    setTextFill(validEntitySizeText,"OK",Color.LIMEGREEN);
+                    setTextFill(validEntitySizeText, "OK", Color.LIMEGREEN);
                     startBtn.setDisable(!validUsernameText.getText().equals("OK"));
-                }
-                else
-                {
-                    setTextFill(validEntitySizeText,"Invalid entity size",Color.RED);
+                } else {
+                    setTextFill(validEntitySizeText, "Invalid entity size", Color.RED);
                     startBtn.setDisable(true);
                 }
             }
             // If it's not an integer
-            catch (Exception e)
-            {
-                setTextFill(validEntitySizeText,"Invalid entity size",Color.RED);
+            catch (Exception e) {
+                setTextFill(validEntitySizeText, "Invalid entity size", Color.RED);
                 startBtn.setDisable(true);
             }
         });
@@ -151,12 +138,12 @@ public class NewGameController implements Initializable
 
     /**
      * Changes the message and color of a Text
-     * @param text to change
+     *
+     * @param text    to change
      * @param message to prompt
-     * @param color to change to
+     * @param color   to change to
      */
-    private void setTextFill(Text text, String message, Color color)
-    {
+    private void setTextFill(Text text, String message, Color color) {
         text.setText(message);
         text.setFill(color);
     }

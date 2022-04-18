@@ -2,18 +2,15 @@ package snake.snake_game;
 
 import javafx.fxml.FXML;
 
-public class MenuController
-{
+public class MenuController {
     @FXML
-    private void switchToNewGame()
-    {
+    private void switchToNewGame() {
         SceneController.switchTo("newgame");
         SoundController.play("select");
     }
 
     @FXML
-    private void switchToLeaderboard()
-    {
+    private void switchToLeaderboard() {
         SceneController.switchTo("leaderboard");
         SoundController.play("select");
     }

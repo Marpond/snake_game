@@ -17,16 +17,13 @@ import java.util.Scanner;
 /**
  * Class used to sort the leaderboard values by descending scores
  */
-class sortByScoreDescend implements Comparator<Leaderboard>
-{
-    public int compare(Leaderboard a, Leaderboard b)
-    {
+class sortByScoreDescend implements Comparator<Leaderboard> {
+    public int compare(Leaderboard a, Leaderboard b) {
         return b.score() - a.score();
     }
 }
 
-public class LeaderboardController implements Initializable
-{
+public class LeaderboardController implements Initializable {
     private final Scanner SCANNER = new Scanner(Leaderboard.FILE);
 
     @FXML
@@ -40,16 +37,15 @@ public class LeaderboardController implements Initializable
 
     private final ObservableList<Leaderboard> LIST = FXCollections.observableArrayList();
 
-    public LeaderboardController() throws IOException {}
+    public LeaderboardController() throws IOException {
+    }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle)
-    {
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         // Load leaderboard
-        while (SCANNER.hasNext() && !SCANNER.next().isEmpty())
-        {
+        while (SCANNER.hasNext() && !SCANNER.next().isEmpty()) {
             String[] data = SCANNER.nextLine().split(",");
-            LIST.add(new Leaderboard(data[0],data[1],Integer.parseInt(data[2])));
+            LIST.add(new Leaderboard(data[0], data[1], Integer.parseInt(data[2])));
         }
         // Bind stuff
         date.setCellValueFactory(new PropertyValueFactory<>("date"));
@@ -61,8 +57,7 @@ public class LeaderboardController implements Initializable
         table.setItems(LIST);
 
         // Make the leaderboard untouchable
-        for (TableColumn tableColumn:table.getColumns())
-        {
+        for (TableColumn tableColumn : table.getColumns()) {
             tableColumn.setResizable(false);
             tableColumn.setSortable(false);
             tableColumn.setEditable(false);
@@ -71,8 +66,7 @@ public class LeaderboardController implements Initializable
     }
 
     @FXML
-    private void switchToMenu()
-    {
+    private void switchToMenu() {
         SceneController.switchTo("menu");
         SoundController.play("select");
     }

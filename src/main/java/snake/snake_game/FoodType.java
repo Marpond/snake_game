@@ -1,6 +1,5 @@
 package snake.snake_game;
 
-public enum FoodType
-{
+public enum FoodType {
     NORMAL, SPEED, SIZE
 }

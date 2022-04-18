@@ -22,6 +22,10 @@ public class Obstacle
      */
     public Obstacle(double x, double y, AnchorPane anchorPane, ArrayList<Rectangle> snakeBody, Food food, ArrayList<Rectangle> obstacles)
     {
+        int kakao = 0;
+        int nemkakao = 1;
+        int nemtudom = kakao + nemkakao;
+        System.out.println(nemtudom);
         this.RECTANGLE = new Rectangle(x,y,GameController.entitySize,GameController.entitySize);
         GameController.setImage(this.RECTANGLE,"src/main/java/snake/snake_game/images/obstacle.png");
         anchorPane.getChildren().add(this.RECTANGLE);
@@ -64,7 +68,7 @@ public class Obstacle
     {
         for (Rectangle rectangle:obstacles)
         {
-            if (obstacle.getLayoutX()==rectangle.getLayoutX()&&
+            if (obstacle.getLayoutX()==rectangle.getLayoutX() &&
                 obstacle.getLayoutY()==rectangle.getLayoutY())
             {
                 return true;
