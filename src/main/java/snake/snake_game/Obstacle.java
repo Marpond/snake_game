@@ -22,29 +22,17 @@ public class Obstacle
      */
     public Obstacle(double x, double y, AnchorPane anchorPane, ArrayList<Rectangle> snakeBody, Food food, ArrayList<Rectangle> obstacles)
     {
-        int kakao = 0;
-        int nemkakao = 1;
-        int nemtudom = kakao + nemkakao;
-        System.out.println(nemtudom);
         this.RECTANGLE = new Rectangle(x,y,GameController.entitySize,GameController.entitySize);
         GameController.setImage(this.RECTANGLE,"src/main/java/snake/snake_game/images/obstacle.png");
         anchorPane.getChildren().add(this.RECTANGLE);
         // Set random position
-        do
-        {
-            move(anchorPane);
-        }
-        // Repeat if
-        while ((this.RECTANGLE.getLayoutX() == snakeBody.get(0).getLayoutX() &&     // If it's inside the snake
-                this.RECTANGLE.getLayoutY() == snakeBody.get(0).getLayoutY())
-                ||
-                (this.RECTANGLE.getLayoutX() == food.getRECTANGLE().getLayoutX() && // If it's inside the food
-                this.RECTANGLE.getLayoutY() == food.getRECTANGLE().getLayoutY())
-                ||
-                (this.RECTANGLE.getLayoutX()-snakeBody.get(0).getLayoutX() < 200)   // If it's within 4 blocks relative to the head
-                ||
-                isStacked(this.RECTANGLE,obstacles));                               // If it's inside an obstacle
-
+        do {move(anchorPane);}
+        while ((this.RECTANGLE.getLayoutX() == snakeBody.get(0).getLayoutX() &&         // If it's inside the snake
+                this.RECTANGLE.getLayoutY() == snakeBody.get(0).getLayoutY()) ||
+                (this.RECTANGLE.getLayoutX() == food.getRECTANGLE().getLayoutX() &&     // If it's inside the food
+                this.RECTANGLE.getLayoutY() == food.getRECTANGLE().getLayoutY()) ||
+                (this.RECTANGLE.getLayoutX()-snakeBody.get(0).getLayoutX() < 200) ||    // If it's within 4 blocks relative to the head
+                isStacked(this.RECTANGLE,obstacles));                                   // If it's inside an obstacle
         obstacles.add(this.RECTANGLE);
     }
 
@@ -66,14 +54,8 @@ public class Obstacle
      */
     private boolean isStacked(Rectangle obstacle,ArrayList<Rectangle> obstacles)
     {
-        for (Rectangle rectangle:obstacles)
-        {
-            if (obstacle.getLayoutX()==rectangle.getLayoutX() &&
-                obstacle.getLayoutY()==rectangle.getLayoutY())
-            {
-                return true;
-            }
-        }
-        return false;
+        return obstacles.stream().anyMatch(rectangle ->
+               obstacle.getLayoutX()==rectangle.getLayoutX() &&
+               obstacle.getLayoutY()==rectangle.getLayoutY());
     }
 }

@@ -8,7 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.ImagePattern;
@@ -16,7 +16,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -246,36 +249,25 @@ public class GameController implements Initializable {
      * @return boolean value
      */
     private boolean isFoodColliding() {
-        // Snake
-        for (Rectangle segment : snake.getBODY()) {
-            if (food.getRECTANGLE().getLayoutX() == segment.getLayoutX() &&
-                    food.getRECTANGLE().getLayoutY() == segment.getLayoutY()) {
-                return true;
-            }
-        }
-        // Obstacle
-        for (Rectangle obstacle : OBSTACLES) {
-            if (food.getRECTANGLE().getLayoutX() == obstacle.getLayoutX() &&
-                    food.getRECTANGLE().getLayoutY() == obstacle.getLayoutY()) {
-                return true;
-            }
-        }
-        return false;
+               // Snake
+        return snake.getBODY().stream().anyMatch(segment ->
+               food.getRECTANGLE().getLayoutX() == segment.getLayoutX() &&
+               food.getRECTANGLE().getLayoutY() == segment.getLayoutY()) ||
+               // Obstacles
+               OBSTACLES.stream().anyMatch(obstacle ->
+               food.getRECTANGLE().getLayoutX() == obstacle.getLayoutX() &&
+               food.getRECTANGLE().getLayoutY() == obstacle.getLayoutY());
     }
 
     /**
      * Sets a timeline that resets the food's location every x seconds
      */
     private void setFoodReset() {
-        try {
-            foodReset.stop();
-        } catch (Exception ignored) {
-        }
+        try {foodReset.stop();}
+        catch (Exception ignored) {}
         foodReset = new Timeline(new KeyFrame(Duration.seconds(10), fr ->
         {
-            do {
-                food.move(fieldPane);
-            }
+            do {food.move(fieldPane);}
             while (isFoodColliding());
         }));
         foodReset.setCycleCount(Animation.INDEFINITE);
@@ -288,13 +280,9 @@ public class GameController implements Initializable {
      * @return boolean value
      */
     private boolean isHitObstacle() {
-        for (Rectangle obstacle : OBSTACLES) {
-            if (obstacle.getLayoutX() == snake.getBODY().get(0).getLayoutX() &&
-                    obstacle.getLayoutY() == snake.getBODY().get(0).getLayoutY()) {
-                return true;
-            }
-        }
-        return false;
+        return OBSTACLES.stream().anyMatch(obstacle ->
+               obstacle.getLayoutX() == snake.getBODY().get(0).getLayoutX() &&
+               obstacle.getLayoutY() == snake.getBODY().get(0).getLayoutY());
     }
 
     /**
@@ -315,13 +303,9 @@ public class GameController implements Initializable {
      * @return boolean value
      */
     private boolean isSelfCollision() {
-        for (Rectangle tail : snake.getBODY().subList(1, snake.getBODY().size())) {
-            if (tail.getLayoutX() == snake.getBODY().get(0).getLayoutX() &&
-                    tail.getLayoutY() == snake.getBODY().get(0).getLayoutY()) {
-                return true;
-            }
-        }
-        return false;
+        return snake.getBODY().subList(1, snake.getBODY().size()).stream().anyMatch(tail ->
+               tail.getLayoutX() == snake.getBODY().get(0).getLayoutX() &&
+               tail.getLayoutY() == snake.getBODY().get(0).getLayoutY());
     }
 
     /**

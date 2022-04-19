@@ -37,8 +37,7 @@ public class LeaderboardController implements Initializable {
 
     private final ObservableList<Leaderboard> LIST = FXCollections.observableArrayList();
 
-    public LeaderboardController() throws IOException {
-    }
+    public LeaderboardController() throws IOException {}
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -57,12 +56,12 @@ public class LeaderboardController implements Initializable {
         table.setItems(LIST);
 
         // Make the leaderboard untouchable
-        for (TableColumn tableColumn : table.getColumns()) {
+        table.getColumns().forEach(tableColumn -> {
             tableColumn.setResizable(false);
             tableColumn.setSortable(false);
             tableColumn.setEditable(false);
             tableColumn.setReorderable(false);
-        }
+        });
     }
 
     @FXML
