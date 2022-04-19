@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Snake {
     // Arraylist of every body segment
-    private final ArrayList<Rectangle> BODY = new ArrayList<>();
+    private final ArrayList<Rectangle> body = new ArrayList<>();
 
     /**
      * Constructor
@@ -19,7 +19,7 @@ public class Snake {
         Rectangle head = new Rectangle(0, 0, GameController.entitySize, GameController.entitySize);
         GameController.setImage(head, "src/main/java/snake/snake_game/images/head.png");
         // Add to body and anchor-pane
-        this.BODY.add(head);
+        this.body.add(head);
         anchorPane.getChildren().add(head);
         // Add first 2 tails
         addTail(anchorPane);
@@ -36,12 +36,12 @@ public class Snake {
         Rectangle tail = new Rectangle(0, 0, GameController.entitySize, GameController.entitySize);
         GameController.setImage(tail, "src/main/java/snake/snake_game/images/tail.png");
         // Add to body and anchor-pane
-        this.BODY.add(tail);
+        this.body.add(tail);
         anchorPane.getChildren().add(tail);
     }
 
-    public ArrayList<Rectangle> getBODY() {
-        return this.BODY;
+    public ArrayList<Rectangle> getBody() {
+        return this.body;
     }
 
     /**
@@ -52,20 +52,20 @@ public class Snake {
     public void moveHead(Direction direction) {
         switch (direction) {
             case DOWN -> {
-                getBODY().get(0).setLayoutY(getBODY().get(0).getLayoutY() + GameController.entitySize);
-                this.BODY.get(0).setRotate(180);
+                getBody().get(0).setLayoutY(getBody().get(0).getLayoutY() + GameController.entitySize);
+                this.body.get(0).setRotate(180);
             }
             case RIGHT -> {
-                getBODY().get(0).setLayoutX(getBODY().get(0).getLayoutX() + GameController.entitySize);
-                this.BODY.get(0).setRotate(90);
+                getBody().get(0).setLayoutX(getBody().get(0).getLayoutX() + GameController.entitySize);
+                this.body.get(0).setRotate(90);
             }
             case UP -> {
-                getBODY().get(0).setLayoutY(getBODY().get(0).getLayoutY() - GameController.entitySize);
-                this.BODY.get(0).setRotate(0);
+                getBody().get(0).setLayoutY(getBody().get(0).getLayoutY() - GameController.entitySize);
+                this.body.get(0).setRotate(0);
             }
             case LEFT -> {
-                getBODY().get(0).setLayoutX(getBODY().get(0).getLayoutX() - GameController.entitySize);
-                this.BODY.get(0).setRotate(270);
+                getBody().get(0).setLayoutX(getBody().get(0).getLayoutX() - GameController.entitySize);
+                this.body.get(0).setRotate(270);
             }
         }
     }
@@ -74,10 +74,10 @@ public class Snake {
      * Makes every other body segment except the head move to the coordinates of the previous segment
      */
     public void followHead() {
-        for (int i = this.BODY.size() - 1; i > 0; i--) {
-            this.BODY.get(i).setLayoutX(this.BODY.get(i - 1).getLayoutX());
-            this.BODY.get(i).setLayoutY(this.BODY.get(i - 1).getLayoutY());
-            this.BODY.get(i).setRotate(this.BODY.get(i - 1).getRotate());
+        for (int i = this.body.size() - 1; i > 0; i--) {
+            this.body.get(i).setLayoutX(this.body.get(i - 1).getLayoutX());
+            this.body.get(i).setLayoutY(this.body.get(i - 1).getLayoutY());
+            this.body.get(i).setRotate(this.body.get(i - 1).getRotate());
         }
         changeEndTail();
     }
@@ -86,7 +86,7 @@ public class Snake {
      * Changes the graphical values of the last segment and the one before that
      */
     private void changeEndTail() {
-        GameController.setImage(this.BODY.get(this.BODY.size() - 1), "src/main/java/snake/snake_game/images/end.png");
-        GameController.setImage(this.BODY.get(this.BODY.size() - 2), "src/main/java/snake/snake_game/images/tail.png");
+        GameController.setImage(this.body.get(this.body.size() - 1), "src/main/java/snake/snake_game/images/end.png");
+        GameController.setImage(this.body.get(this.body.size() - 2), "src/main/java/snake/snake_game/images/tail.png");
     }
 }

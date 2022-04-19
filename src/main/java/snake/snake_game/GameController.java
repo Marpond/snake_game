@@ -42,8 +42,8 @@ public class GameController implements Initializable {
     private final double MAX_OBSTACLES = 2000 / entitySize;
     private final double SPEED_MULTIPLIER = 1.3;
     private final int[] ROTATION = {0, 90, 180, 270};
-    private final Random RANDOM = new Random();
-    private final ArrayList<Rectangle> OBSTACLES = new ArrayList<>();
+    private final Random random = new Random();
+    private final ArrayList<Rectangle> allObstacles = new ArrayList<>();
     // Without this the user would be able to change direction multiple times between timeline cycles
     private boolean canChangeDirection;
 
@@ -99,8 +99,8 @@ public class GameController implements Initializable {
 
         // Add obstacles
         if (wantObstacles) {
-            for (int i = 0; i < RANDOM.nextInt((int) MAX_OBSTACLES); i++) {
-                new Obstacle(0, 0, obstaclePane, snake.getBODY(), food, OBSTACLES);
+            for (int i = 0; i < random.nextInt((int) MAX_OBSTACLES); i++) {
+                new Obstacle(0, 0, obstaclePane, snake.getBody(), food, allObstacles);
             }
         }
         // Move the food once and repeat till it's not colliding with other rectangles
@@ -122,7 +122,7 @@ public class GameController implements Initializable {
         if (isCursed) {
             // Set a new timeline that changes the rotation of the play-field every second
             Timeline cursedTimeline = new Timeline(new KeyFrame(Duration.seconds(1), c ->
-                    obstaclePane.setRotate(ROTATION[RANDOM.nextInt(4)])));
+                    obstaclePane.setRotate(ROTATION[random.nextInt(4)])));
             cursedTimeline.setCycleCount(Animation.INDEFINITE);
             cursedTimeline.setRate(1);
             cursedTimeline.play();
@@ -215,7 +215,7 @@ public class GameController implements Initializable {
      * Updates leaderboard.csv
      */
     private void updateLeaderboard() {
-        try (PrintWriter pw = new PrintWriter(new FileOutputStream(Leaderboard.FILE, true))) {
+        try (PrintWriter pw = new PrintWriter(new FileOutputStream(Leaderboard.file, true))) {
             // Only "vanilla" runs are saved
             if (!Food.wantSpeed &&
                     !Food.wantSize &&
@@ -239,8 +239,8 @@ public class GameController implements Initializable {
      * @return boolean value
      */
     private boolean isFoodEaten() {
-        return food.getRECTANGLE().getLayoutX() == snake.getBODY().get(0).getLayoutX() &&
-                food.getRECTANGLE().getLayoutY() == snake.getBODY().get(0).getLayoutY();
+        return food.getRECTANGLE().getLayoutX() == snake.getBody().get(0).getLayoutX() &&
+                food.getRECTANGLE().getLayoutY() == snake.getBody().get(0).getLayoutY();
     }
 
     /**
@@ -250,11 +250,11 @@ public class GameController implements Initializable {
      */
     private boolean isFoodColliding() {
                // Snake
-        return snake.getBODY().stream().anyMatch(segment ->
+        return snake.getBody().stream().anyMatch(segment ->
                food.getRECTANGLE().getLayoutX() == segment.getLayoutX() &&
                food.getRECTANGLE().getLayoutY() == segment.getLayoutY()) ||
                // Obstacles
-               OBSTACLES.stream().anyMatch(obstacle ->
+               allObstacles.stream().anyMatch(obstacle ->
                food.getRECTANGLE().getLayoutX() == obstacle.getLayoutX() &&
                food.getRECTANGLE().getLayoutY() == obstacle.getLayoutY());
     }
@@ -280,9 +280,9 @@ public class GameController implements Initializable {
      * @return boolean value
      */
     private boolean isHitObstacle() {
-        return OBSTACLES.stream().anyMatch(obstacle ->
-               obstacle.getLayoutX() == snake.getBODY().get(0).getLayoutX() &&
-               obstacle.getLayoutY() == snake.getBODY().get(0).getLayoutY());
+        return allObstacles.stream().anyMatch(obstacle ->
+               obstacle.getLayoutX() == snake.getBody().get(0).getLayoutX() &&
+               obstacle.getLayoutY() == snake.getBody().get(0).getLayoutY());
     }
 
     /**
@@ -291,10 +291,10 @@ public class GameController implements Initializable {
      * @return boolean value
      */
     private boolean isHitWall() {
-        return snake.getBODY().get(0).getLayoutX() > fieldPane.getPrefWidth() - entitySize ||
-                snake.getBODY().get(0).getLayoutY() > fieldPane.getPrefHeight() - entitySize ||
-                snake.getBODY().get(0).getLayoutX() < 0 ||
-                snake.getBODY().get(0).getLayoutY() < 0;
+        return snake.getBody().get(0).getLayoutX() > fieldPane.getPrefWidth() - entitySize ||
+                snake.getBody().get(0).getLayoutY() > fieldPane.getPrefHeight() - entitySize ||
+                snake.getBody().get(0).getLayoutX() < 0 ||
+                snake.getBody().get(0).getLayoutY() < 0;
     }
 
     /**
@@ -303,9 +303,9 @@ public class GameController implements Initializable {
      * @return boolean value
      */
     private boolean isSelfCollision() {
-        return snake.getBODY().subList(1, snake.getBODY().size()).stream().anyMatch(tail ->
-               tail.getLayoutX() == snake.getBODY().get(0).getLayoutX() &&
-               tail.getLayoutY() == snake.getBODY().get(0).getLayoutY());
+        return snake.getBody().subList(1, snake.getBody().size()).stream().anyMatch(tail ->
+               tail.getLayoutX() == snake.getBody().get(0).getLayoutX() &&
+               tail.getLayoutY() == snake.getBody().get(0).getLayoutY());
     }
 
     /**
